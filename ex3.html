@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        #login-form,
+        #user-dashboard {
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        #login-form h2,
+        #user-dashboard h2,
+        #feed h2 {
+            margin-bottom: 1rem;
+        }
+
+        input,
+        textarea,
+        button {
+            margin: 0.5rem;
+            padding: 0.3rem;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        li p {
+            margin: 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+        }
+    </style>
+    <title>Microblogging App</title>
+</head>
+
+<body>
+    <header>
+        <h1>Microblogging App</h1>
+    </header>
+    <main>
+        <div id="login-form">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <button id="login-btn">Login</button>
+        </div>
+        <div id="user-dashboard">
+            <h2>Welcome, <span id="user-username"></span>!</h2>
+            <textarea id="post-content" placeholder="Write your post..."></textarea>
+            <button id="post-btn">Post</button>
+            <button id="logout-btn">Logout</button>
+        </div>
+        <div id="feed">
+            <h2>Feed</h2>
+            <ul id="post-list"></ul>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username');
+            const loginButton = document.getElementById('login-btn');
+            const userDashboard = document.getElementById('user-dashboard');
+            const userUsername = document.getElementById('user-username');
+            const postContent = document.getElementById('post-content');
+            const postButton = document.getElementById('post-btn');
+            const logoutButton = document.getElementById('logout-btn');
+            const postList = document.getElementById('post-list');
+
+            let currentUser = localStorage.getItem('currentUser');
+
+            if (currentUser) {
+                // User is already logged in
+                loginForm.style.display = 'none';
+                userDashboard.style.display = 'block';
+                userUsername.textContent = currentUser;
+                loadPosts();
+            } else {
+                // Show login form
+                loginForm.style.display = 'block';
+                userDashboard.style.display = 'none';
+            }
+
+            loginButton.addEventListener('click', () => {
+                const username = usernameInput.value.trim();
+                if (username !== '') {
+                    currentUser = username;
+                    localStorage.setItem('currentUser', currentUser);
+                    loginForm.style.display = 'none';
+                    userDashboard.style.display = 'block';
+                    userUsername.textContent = username;
+                    loadPosts();
+                }
+            });
+
+            postButton.addEventListener('click', () => {
+                const content = postContent.value.trim();
+                if (content !== '') {
+                    const post = {
+                        username: currentUser,
+                        content: content
+                    };
+                    savePost(post);
+                    postContent.value = '';
+                    loadPosts();
+                }
+            });
+
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                userDashboard.style.display = 'none';
+                loginForm.style.display = 'block';
+            });
+
+            function savePost(post) {
+                let posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push(post);
+                localStorage.setItem('posts', JSON.stringify(posts));
+            }
+
+            function loadPosts() {
+                postList.innerHTML = '';
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.forEach(post => {
+                    const postItem = document.createElement('li');
+                    postItem.innerHTML = `<p><strong>${post.username}</strong>: ${post.content}</p>`;
+                    postList.appendChild(postItem);
+                });
+            }
+
+            // Initialize posts in local storage if not already present
+            if (localStorage.getItem('posts') === null) {
+                localStorage.setItem('posts', JSON.stringify([]));
+            }
+        });
+    </script>
+    <footer>
+        <p>&copy; 2024 AAA All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
+
+
