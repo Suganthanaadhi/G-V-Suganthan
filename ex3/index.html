@@ -26,14 +26,16 @@
         }
 
         #login-form,
-        #user-dashboard {
+        #user-dashboard,
+        #profile {
             display: none;
             margin-bottom: 2rem;
         }
 
         #login-form h2,
         #user-dashboard h2,
-        #feed h2 {
+        #feed h2,
+        #profile h2 {
             margin-bottom: 1rem;
         }
 
@@ -72,6 +74,31 @@
             height: 100px;
         }
 
+        img,
+        video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        .post-actions {
+            margin: 0.5rem 0;
+        }
+
+        .like-dislike-buttons {
+            margin-right: 1rem;
+        }
+
+        .comments {
+            margin-top: 1rem;
+        }
+
+        .comments textarea {
+            width: 100%;
+            height: 50px;
+        }
+
         footer {
             text-align: center;
             padding: 1rem;
@@ -94,10 +121,26 @@
         </div>
         <div id="user-dashboard">
             <h2>Welcome, <span id="user-username"></span>!</h2>
+
+            <legend>
+                  <button id="profile-btn">Profile</button>
             <textarea id="post-content" placeholder="Write your post..."></textarea>
+            <div>
+                <label for="post-image">Post Photo:</label>
+                <input type="file" id="post-image" accept="image/*"><br>
+                <label for="post-video">Post Video:</label>
+                <input type="file" id="post-video" accept="video/*">
+            </div>
             <button id="post-btn">Post</button>
             <button id="logout-btn">Logout</button>
         </div>
+        <div id="profile">
+            <h2>Profile</h2>
+            <p id="profile-username"></p>
+            <button id="back-to-feed">Back to Feed</button>
+        </div>
+            </legend>
+          
         <div id="feed">
             <h2>Feed</h2>
             <ul id="post-list"></ul>
@@ -109,24 +152,30 @@
             const usernameInput = document.getElementById('username');
             const loginButton = document.getElementById('login-btn');
             const userDashboard = document.getElementById('user-dashboard');
+            const profile = document.getElementById('profile');
             const userUsername = document.getElementById('user-username');
             const postContent = document.getElementById('post-content');
+            const postImage = document.getElementById('post-image');
+            const postVideo = document.getElementById('post-video');
             const postButton = document.getElementById('post-btn');
             const logoutButton = document.getElementById('logout-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            const backToFeedBtn = document.getElementById('back-to-feed');
             const postList = document.getElementById('post-list');
+            const profileUsername = document.getElementById('profile-username');
 
             let currentUser = localStorage.getItem('currentUser');
 
             if (currentUser) {
-                // User is already logged in
                 loginForm.style.display = 'none';
                 userDashboard.style.display = 'block';
+                profile.style.display = 'none';
                 userUsername.textContent = currentUser;
                 loadPosts();
             } else {
-                // Show login form
                 loginForm.style.display = 'block';
                 userDashboard.style.display = 'none';
+                profile.style.display = 'none';
             }
 
             loginButton.addEventListener('click', () => {
@@ -136,6 +185,7 @@
                     localStorage.setItem('currentUser', currentUser);
                     loginForm.style.display = 'none';
                     userDashboard.style.display = 'block';
+                    profile.style.display = 'none';
                     userUsername.textContent = username;
                     loadPosts();
                 }
@@ -143,13 +193,23 @@
 
             postButton.addEventListener('click', () => {
                 const content = postContent.value.trim();
-                if (content !== '') {
+                const imageFile = postImage.files[0];
+                const videoFile = postVideo.files[0];
+
+                if (content !== '' || imageFile || videoFile) {
                     const post = {
                         username: currentUser,
-                        content: content
+                        content: content,
+                        image: imageFile ? URL.createObjectURL(imageFile) : null,
+                        video: videoFile ? URL.createObjectURL(videoFile) : null,
+                        likes: 0,
+                        dislikes: 0,
+                        comments: []
                     };
                     savePost(post);
                     postContent.value = '';
+                    postImage.value = '';
+                    postVideo.value = '';
                     loadPosts();
                 }
             });
@@ -158,6 +218,18 @@
                 localStorage.removeItem('currentUser');
                 userDashboard.style.display = 'none';
                 loginForm.style.display = 'block';
+                profile.style.display = 'none';
+            });
+
+            profileBtn.addEventListener('click', () => {
+                userDashboard.style.display = 'none';
+                profile.style.display = 'block';
+                profileUsername.textContent = `Username: ${currentUser}`;
+            });
+
+            backToFeedBtn.addEventListener('click', () => {
+                userDashboard.style.display = 'block';
+                profile.style.display = 'none';
             });
 
             function savePost(post) {
@@ -169,24 +241,59 @@
             function loadPosts() {
                 postList.innerHTML = '';
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.forEach(post => {
+                posts.forEach((post, index) => {
                     const postItem = document.createElement('li');
-                    postItem.innerHTML = `<p><strong>${post.username}</strong>: ${post.content}</p>`;
+                    postItem.innerHTML = `
+                        <p><strong>${post.username}</strong>: ${post.content}</p>
+                        ${post.image ? `<img src="${post.image}" alt="Post image">` : ''}
+                        ${post.video ? `<video controls><source src="${post.video}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
+                        <div class="post-actions">
+                            <button class="like-dislike-buttons" onclick="likePost(${index})">Like (${post.likes})</button>
+                            <button class="like-dislike-buttons" onclick="dislikePost(${index})">Dislike (${post.dislikes})</button>
+                        </div>
+                        <div class="comments">
+                            <textarea placeholder="Write a comment..." onkeydown="if(event.key === 'Enter') addComment(${index}, this)"></textarea>
+                            <ul>${post.comments.map(comment => `<li>${comment}</li>`).join('')}</ul>
+                        </div>
+                    `;
                     postList.appendChild(postItem);
                 });
             }
 
-            // Initialize posts in local storage if not already present
+            window.likePost = function (postIndex) {
+                let posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts[postIndex].likes++;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                loadPosts();
+            }
+
+            window.dislikePost = function (postIndex) {
+                let posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts[postIndex].dislikes++;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                loadPosts();
+            }
+
+            window.addComment = function (postIndex, textarea) {
+                const comment = textarea.value.trim();
+                if (comment !== '') {
+                    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+                    posts[postIndex].comments.push(comment);
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    loadPosts();
+                    textarea.value = '';
+                }
+            }
+
             if (localStorage.getItem('posts') === null) {
                 localStorage.setItem('posts', JSON.stringify([]));
             }
         });
     </script>
     <footer>
-        <p>&copy; 2024 AAA All rights reserved.</p>
+        <p>&copy; 2024 All rights reserved.</p>
     </footer>
 </body>
 
 </html>
-
-
+   
