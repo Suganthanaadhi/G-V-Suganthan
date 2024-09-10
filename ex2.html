@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f4f4f4;
+        }
+
+        #app {
+            width: 300px;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div id="todo" style="display: none;">
+            <h2>To-Do List</h2>
+            <input type="text" id="newTask" placeholder="New Task">
+            <button id="addTask">Add Task</button>
+            <ul id="taskList"></ul>
+            <button id="logout">Logout</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const todoSection = document.getElementById('todo');
+            const loginSection = document.getElementById('login');
+            const addTaskButton = document.getElementById('addTask');
+            const taskList = document.getElementById('taskList');
+            const logoutButton = document.getElementById('logout');
+            const usernameInput = document.getElementById('username');
+            const newTaskInput = document.getElementById('newTask');
+
+            let username = '';
+
+     
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                username = usernameInput.value;
+                if (username) {
+                    loginSection.style.display = 'none';
+                    todoSection.style.display = 'block';
+                    loadTasks();
+                }
+            });
+
+       
+            addTaskButton.addEventListener('click', () => {
+                const task = newTaskInput.value;
+                if (task) {
+                    addTask(task);
+                    newTaskInput.value = '';
+                }
+            });
+
+           
+            logoutButton.addEventListener('click', () => {
+                loginSection.style.display = 'block';
+                todoSection.style.display = 'none';
+            });
+
+        
+            function loadTasks() {
+                const tasks = JSON.parse(localStorage.getItem(username) || '[]');
+                taskList.innerHTML = '';
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task;
+                    taskList.appendChild(li);
+                });
+            }
+
+            
+            function addTask(task) {
+                const tasks = JSON.parse(localStorage.getItem(username) || '[]');
+                tasks.push(task);
+                localStorage.setItem(username, JSON.stringify(tasks));
+                loadTasks();
+            }
+        });
+    </script>
+</body>
+
+</html>
