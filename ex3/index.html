@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram-like App</title>
+    <title>Micro-Blogging App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,31 +13,38 @@
         }
 
         header {
-            background-color: #3897f0;
+            background-color: #282c34;
             color: white;
             padding: 20px;
             text-align: center;
         }
 
-        .container {
+        .content {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             margin-top: 20px;
         }
 
-        .profile, .feed {
+        .user-profile, .feed {
             border: 1px solid #ccc;
             padding: 20px;
-            width: 30%;
+            width: 45%;
             background: white;
-            margin: 10px;
             border-radius: 8px;
         }
 
-        .posts {
-            max-height: 400px;
-            overflow-y: auto;
+        .user-posts {
             margin-top: 10px;
+        }
+
+        input {
+            margin-right: 10px;
+            padding: 5px;
+            width: 70%;
+        }
+
+        button {
+            padding: 5px 10px;
         }
 
         .post {
@@ -45,37 +52,9 @@
             padding: 10px 0;
         }
 
-        .post img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .post-actions, .comment-input {
-            margin-top: 10px;
-        }
-
-        .post-actions button, .comment-input button {
-            margin-right: 10px;
-            background-color: #f0f0f0;
-            border: none;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-
-        .post-actions button:hover, .comment-input button:hover {
-            background-color: #ddd;
-        }
-
-        .comments {
-            margin-top: 10px;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-
-        .comment {
-            margin-top: 5px;
+        .profile {
+            display: flex;
+            align-items: center;
         }
 
         .profile img {
@@ -84,104 +63,114 @@
             border-radius: 50%;
             margin-right: 10px;
         }
+
+        .post-actions {
+            margin-top: 10px;
+        }
+
+        .post-actions button {
+            margin-right: 10px;
+            background-color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+        }
+
+        .post-actions button:hover {
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Instagram-like App</h1>
+        <h1>Micro-Blogging App</h1>
     </header>
 
-    <div class="container">
-        <div class="profile">
-            <h2>Your Profile</h2>
-            <div class="profile-info">
-                <img src="https://via.placeholder.com/50" alt="Profile Picture">
-                <h3>Username</h3>
-            </div>
+    <div class="content">
+        <div class="user-profile" id="userProfile">
+            <h2>Alice</h2>
             <form id="postForm">
-                <input type="text" id="imageUrl" placeholder="Image URL" required>
-                <input type="text" id="postCaption" placeholder="Caption" required>
+                <input type="text" id="newPostContent" placeholder="Write a new post..." required>
                 <button type="submit">Post</button>
             </form>
-            <div class="posts" id="userPosts"></div>
+            <div class="user-posts" id="userPosts"></div>
         </div>
 
-        <div class="feed">
-            <h2>Feed</h2>
-            <div id="feedPosts"></div>
+        <div class="feed" id="feed">
+            <h2>Your Feed</h2>
         </div>
     </div>
 
     <script>
         const postForm = document.getElementById('postForm');
-        const imageUrlInput = document.getElementById('imageUrl');
-        const postCaptionInput = document.getElementById('postCaption');
-        const userPostsDiv = document.getElementById('userPosts');
-        const feedPostsDiv = document.getElementById('feedPosts');
+        const newPostContent = document.getElementById('newPostContent');
+        const userPosts = document.getElementById('userPosts');
+        const feed = document.getElementById('feed');
+
+        // User profile information
+        const userProfile = {
+            name: 'Doni',
+            image: 'https://i1.wp.com/godofindia.com/wp-content/uploads/2017/05/ms-dhoni-6.jpg' // Placeholder image URL
+        };
 
         // Function to create a new post
-        function createPost(imageUrl, caption) {
-            return {
-                imageUrl: imageUrl,
-                caption: caption,
-                likes: 0,
-                comments: [],
+        function createPost(author, content) {
+            const post = {
+                author: author.name,
+                image: author.image,
+                content: content,
                 timestamp: Date.now(),
+                likes: 0,
+                dislikes: 0
             };
+            return post;
         }
 
         // Function to display a post
-        function displayPost(post) {
+        function displayPost(post, isFeed = false) {
             const postDiv = document.createElement('div');
             postDiv.className = 'post';
             postDiv.innerHTML = `
-                <img src="${post.imageUrl}" alt="Post Image">
-                <p>${post.caption}</p>
+                <div class="profile">
+                    <img src="${post.image}" alt="${post.author}'s profile picture">
+                    <h3>${post.author}</h3>
+                </div>
+                <p>${post.content}</p>
                 <p><small>${new Date(post.timestamp).toLocaleString()}</small></p>
                 <div class="post-actions">
-                    <button onclick="likePost(this)">❤️ Like (${post.likes})</button>
-                </div>
-                <div class="comments"></div>
-                <div class="comment-input">
-                    <input type="text" placeholder="Add a comment..." required>
-                    <button onclick="addComment(this)">Comment</button>
+                    <button onclick="likePost(this)">👍 Like (${post.likes})</button>
+                    <button onclick="dislikePost(this)">👎 Dislike (${post.dislikes})</button>
                 </div>
             `;
-            userPostsDiv.appendChild(postDiv);
-            feedPostsDiv.appendChild(postDiv.cloneNode(true)); // Display the same post in feed
+            if (isFeed) {
+                feed.appendChild(postDiv);
+            } else {
+                userPosts.appendChild(postDiv);
+            }
         }
 
         // Handle post submission
         postForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            const imageUrl = imageUrlInput.value;
-            const caption = postCaptionInput.value;
-            const newPost = createPost(imageUrl, caption);
-            imageUrlInput.value = '';
-            postCaptionInput.value = '';
+            const content = newPostContent.value;
+            const newPost = createPost(userProfile, content);
+            newPostContent.value = '';
             displayPost(newPost);
+            displayPost(newPost, true); // Also display in feed
         });
 
-        // Like a post
+        // Like and Dislike functions
         function likePost(button) {
             const postDiv = button.parentElement.parentElement;
             const likesButton = postDiv.querySelector('button:first-child');
             const likesCount = parseInt(likesButton.textContent.match(/\d+/)[0]) + 1;
-            likesButton.textContent = `❤️ Like (${likesCount})`;
+            likesButton.textContent = `👍 Like (${likesCount})`;
         }
 
-        // Add a comment to a post
-        function addComment(button) {
+        function dislikePost(button) {
             const postDiv = button.parentElement.parentElement;
-            const commentInput = postDiv.querySelector('.comment-input input');
-            const commentContent = commentInput.value;
-            if (commentContent) {
-                const comment = document.createElement('div');
-                comment.className = 'comment';
-                comment.textContent = commentContent;
-                postDiv.querySelector('.comments').appendChild(comment);
-                commentInput.value = ''; // Clear the input
-            }
+            const dislikesButton = postDiv.querySelector('button:last-child');
+            const dislikesCount = parseInt(dislikesButton.textContent.match(/\d+/)[0]) + 1;
+            dislikesButton.textContent = `👎 Dislike (${dislikesCount})`;
         }
     </script>
 </body>
