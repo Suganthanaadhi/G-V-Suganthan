@@ -40,7 +40,7 @@
         input {
             margin-right: 10px;
             padding: 5px;
-            width: 70%;
+            width: 60%;
         }
 
         button {
@@ -117,6 +117,18 @@
             color: red;
             margin-top: 10px;
         }
+
+        .emoji-container {
+            margin-top: 10px;
+        }
+
+        .emoji-container button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            margin: 0 5px;
+        }
     </style>
 </head>
 <body>
@@ -141,6 +153,14 @@
                 <input type="text" id="newPostContent" placeholder="Write a new post..." required>
                 <button type="submit">Post</button>
             </form>
+            <div class="emoji-container">
+                <span>Select an emoji: </span>
+                <button onclick="addEmoji('😊')">😊</button>
+                <button onclick="addEmoji('❤️')">❤️</button>
+                <button onclick="addEmoji('😂')">😂</button>
+                <button onclick="addEmoji('😢')">😢</button>
+                <button onclick="addEmoji('😎')">😎</button>
+            </div>
             <div class="user-posts" id="userPosts"></div>
         </div>
 
@@ -230,6 +250,12 @@
             displayPost(newPost);
             displayPost(newPost, true); // Also display in feed
         });
+
+        // Add emoji to the post content
+        function addEmoji(emoji) {
+            newPostContent.value += emoji;
+            newPostContent.focus(); // Keep the focus on the input field
+        }
 
         // Like and Dislike functions
         function likePost(button) {
