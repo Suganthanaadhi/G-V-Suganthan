@@ -78,6 +78,45 @@
         .post-actions button:hover {
             background-color: #ddd;
         }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 200px;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .login-container button {
+            padding: 10px;
+            background-color: #282c34;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #3c4043;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +124,17 @@
         <h1>Micro-Blogging App</h1>
     </header>
 
-    <div class="content">
+    <div id="loginContainer" class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <div id="appContainer" class="content" style="display: none;">
         <div class="user-profile" id="userProfile">
             <h2>Alice</h2>
             <form id="postForm">
@@ -101,10 +150,34 @@
     </div>
 
     <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const appContainer = document.getElementById('appContainer');
+        const loginContainer = document.getElementById('loginContainer');
         const postForm = document.getElementById('postForm');
         const newPostContent = document.getElementById('newPostContent');
         const userPosts = document.getElementById('userPosts');
         const feed = document.getElementById('feed');
+
+        // Dummy user credentials
+        const USERNAME = 'Doni';
+        const PASSWORD = 'password123';
+
+        // Handle login submission
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check for valid credentials
+            if (username === USERNAME && password === PASSWORD) {
+                localStorage.setItem('loggedIn', true);
+                loginContainer.style.display = 'none';
+                appContainer.style.display = 'flex';
+            } else {
+                errorMessage.textContent = 'Invalid username or password. Please try again.';
+            }
+        });
 
         // User profile information
         const userProfile = {
