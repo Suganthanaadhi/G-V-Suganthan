@@ -1,299 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram-like App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #f4f4f4;
         }
 
         header {
-            background-color: #333;
-            color: #fff;
+            background-color: #3897f0;
+            color: white;
+            padding: 20px;
             text-align: center;
-            padding: 1rem;
         }
 
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        #login-form,
-        #user-dashboard,
-        #profile {
-            display: none;
-            margin-bottom: 2rem;
+        .profile, .feed {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 30%;
+            background: white;
+            margin: 10px;
+            border-radius: 8px;
         }
 
-        #login-form h2,
-        #user-dashboard h2,
-        #feed h2,
-        #profile h2 {
-            margin-bottom: 1rem;
+        .posts {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
         }
 
-        input,
-        textarea,
-        button {
-            margin: 0.5rem;
-            padding: 0.3rem;
-            font-size: 1rem;
+        .post {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
         }
 
-        button {
-            background-color: #333;
-            color: #fff;
+        .post img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .post-actions, .comment-input {
+            margin-top: 10px;
+        }
+
+        .post-actions button, .comment-input button {
+            margin-right: 10px;
+            background-color: #f0f0f0;
             border: none;
             cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
         }
 
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        li {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        li p {
-            margin: 0;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-        }
-
-        img,
-        video {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0.5rem 0;
-        }
-
-        .post-actions {
-            margin: 0.5rem 0;
-        }
-
-        .like-dislike-buttons {
-            margin-right: 1rem;
+        .post-actions button:hover, .comment-input button:hover {
+            background-color: #ddd;
         }
 
         .comments {
-            margin-top: 1rem;
+            margin-top: 10px;
+            max-height: 100px;
+            overflow-y: auto;
         }
 
-        .comments textarea {
-            width: 100%;
+        .comment {
+            margin-top: 5px;
+        }
+
+        .profile img {
+            width: 50px;
             height: 50px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: #333;
-            color: #fff;
+            border-radius: 50%;
+            margin-right: 10px;
         }
     </style>
-    <title>Microblogging App</title>
 </head>
-
 <body>
     <header>
-        <h1>Microblogging App</h1>
+        <h1>Instagram-like App</h1>
     </header>
-    <main>
-        <div id="login-form">
-            <h2>Login</h2>
-            <input type="text" id="username" placeholder="Username">
-            <button id="login-btn">Login</button>
-        </div>
-        <div id="user-dashboard">
-            <h2>Welcome, <span id="user-username"></span>!</h2>
 
-            <legend>
-                  <button id="profile-btn">Profile</button>
-            <textarea id="post-content" placeholder="Write your post..."></textarea>
-            <div>
-                <label for="post-image">Post Photo:</label>
-                <input type="file" id="post-image" accept="image/*"><br>
-                <label for="post-video">Post Video:</label>
-                <input type="file" id="post-video" accept="video/*">
+    <div class="container">
+        <div class="profile">
+            <h2>Your Profile</h2>
+            <div class="profile-info">
+                <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                <h3>Username</h3>
             </div>
-            <button id="post-btn">Post</button>
-            <button id="logout-btn">Logout</button>
+            <form id="postForm">
+                <input type="text" id="imageUrl" placeholder="Image URL" required>
+                <input type="text" id="postCaption" placeholder="Caption" required>
+                <button type="submit">Post</button>
+            </form>
+            <div class="posts" id="userPosts"></div>
         </div>
-        <div id="profile">
-            <h2>Profile</h2>
-            <p id="profile-username"></p>
-            <button id="back-to-feed">Back to Feed</button>
-        </div>
-            </legend>
-          
-        <div id="feed">
+
+        <div class="feed">
             <h2>Feed</h2>
-            <ul id="post-list"></ul>
+            <div id="feedPosts"></div>
         </div>
-    </main>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('login-form');
-            const usernameInput = document.getElementById('username');
-            const loginButton = document.getElementById('login-btn');
-            const userDashboard = document.getElementById('user-dashboard');
-            const profile = document.getElementById('profile');
-            const userUsername = document.getElementById('user-username');
-            const postContent = document.getElementById('post-content');
-            const postImage = document.getElementById('post-image');
-            const postVideo = document.getElementById('post-video');
-            const postButton = document.getElementById('post-btn');
-            const logoutButton = document.getElementById('logout-btn');
-            const profileBtn = document.getElementById('profile-btn');
-            const backToFeedBtn = document.getElementById('back-to-feed');
-            const postList = document.getElementById('post-list');
-            const profileUsername = document.getElementById('profile-username');
+        const postForm = document.getElementById('postForm');
+        const imageUrlInput = document.getElementById('imageUrl');
+        const postCaptionInput = document.getElementById('postCaption');
+        const userPostsDiv = document.getElementById('userPosts');
+        const feedPostsDiv = document.getElementById('feedPosts');
 
-            let currentUser = localStorage.getItem('currentUser');
+        // Function to create a new post
+        function createPost(imageUrl, caption) {
+            return {
+                imageUrl: imageUrl,
+                caption: caption,
+                likes: 0,
+                comments: [],
+                timestamp: Date.now(),
+            };
+        }
 
-            if (currentUser) {
-                loginForm.style.display = 'none';
-                userDashboard.style.display = 'block';
-                profile.style.display = 'none';
-                userUsername.textContent = currentUser;
-                loadPosts();
-            } else {
-                loginForm.style.display = 'block';
-                userDashboard.style.display = 'none';
-                profile.style.display = 'none';
-            }
+        // Function to display a post
+        function displayPost(post) {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post';
+            postDiv.innerHTML = `
+                <img src="${post.imageUrl}" alt="Post Image">
+                <p>${post.caption}</p>
+                <p><small>${new Date(post.timestamp).toLocaleString()}</small></p>
+                <div class="post-actions">
+                    <button onclick="likePost(this)">❤️ Like (${post.likes})</button>
+                </div>
+                <div class="comments"></div>
+                <div class="comment-input">
+                    <input type="text" placeholder="Add a comment..." required>
+                    <button onclick="addComment(this)">Comment</button>
+                </div>
+            `;
+            userPostsDiv.appendChild(postDiv);
+            feedPostsDiv.appendChild(postDiv.cloneNode(true)); // Display the same post in feed
+        }
 
-            loginButton.addEventListener('click', () => {
-                const username = usernameInput.value.trim();
-                if (username !== '') {
-                    currentUser = username;
-                    localStorage.setItem('currentUser', currentUser);
-                    loginForm.style.display = 'none';
-                    userDashboard.style.display = 'block';
-                    profile.style.display = 'none';
-                    userUsername.textContent = username;
-                    loadPosts();
-                }
-            });
-
-            postButton.addEventListener('click', () => {
-                const content = postContent.value.trim();
-                const imageFile = postImage.files[0];
-                const videoFile = postVideo.files[0];
-
-                if (content !== '' || imageFile || videoFile) {
-                    const post = {
-                        username: currentUser,
-                        content: content,
-                        image: imageFile ? URL.createObjectURL(imageFile) : null,
-                        video: videoFile ? URL.createObjectURL(videoFile) : null,
-                        likes: 0,
-                        dislikes: 0,
-                        comments: []
-                    };
-                    savePost(post);
-                    postContent.value = '';
-                    postImage.value = '';
-                    postVideo.value = '';
-                    loadPosts();
-                }
-            });
-
-            logoutButton.addEventListener('click', () => {
-                localStorage.removeItem('currentUser');
-                userDashboard.style.display = 'none';
-                loginForm.style.display = 'block';
-                profile.style.display = 'none';
-            });
-
-            profileBtn.addEventListener('click', () => {
-                userDashboard.style.display = 'none';
-                profile.style.display = 'block';
-                profileUsername.textContent = `Username: ${currentUser}`;
-            });
-
-            backToFeedBtn.addEventListener('click', () => {
-                userDashboard.style.display = 'block';
-                profile.style.display = 'none';
-            });
-
-            function savePost(post) {
-                let posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push(post);
-                localStorage.setItem('posts', JSON.stringify(posts));
-            }
-
-            function loadPosts() {
-                postList.innerHTML = '';
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.forEach((post, index) => {
-                    const postItem = document.createElement('li');
-                    postItem.innerHTML = `
-                        <p><strong>${post.username}</strong>: ${post.content}</p>
-                        ${post.image ? `<img src="${post.image}" alt="Post image">` : ''}
-                        ${post.video ? `<video controls><source src="${post.video}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
-                        <div class="post-actions">
-                            <button class="like-dislike-buttons" onclick="likePost(${index})">Like (${post.likes})</button>
-                            <button class="like-dislike-buttons" onclick="dislikePost(${index})">Dislike (${post.dislikes})</button>
-                        </div>
-                        <div class="comments">
-                            <textarea placeholder="Write a comment..." onkeydown="if(event.key === 'Enter') addComment(${index}, this)"></textarea>
-                            <ul>${post.comments.map(comment => `<li>${comment}</li>`).join('')}</ul>
-                        </div>
-                    `;
-                    postList.appendChild(postItem);
-                });
-            }
-
-            window.likePost = function (postIndex) {
-                let posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts[postIndex].likes++;
-                localStorage.setItem('posts', JSON.stringify(posts));
-                loadPosts();
-            }
-
-            window.dislikePost = function (postIndex) {
-                let posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts[postIndex].dislikes++;
-                localStorage.setItem('posts', JSON.stringify(posts));
-                loadPosts();
-            }
-
-            window.addComment = function (postIndex, textarea) {
-                const comment = textarea.value.trim();
-                if (comment !== '') {
-                    let posts = JSON.parse(localStorage.getItem('posts')) || [];
-                    posts[postIndex].comments.push(comment);
-                    localStorage.setItem('posts', JSON.stringify(posts));
-                    loadPosts();
-                    textarea.value = '';
-                }
-            }
-
-            if (localStorage.getItem('posts') === null) {
-                localStorage.setItem('posts', JSON.stringify([]));
-            }
+        // Handle post submission
+        postForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const imageUrl = imageUrlInput.value;
+            const caption = postCaptionInput.value;
+            const newPost = createPost(imageUrl, caption);
+            imageUrlInput.value = '';
+            postCaptionInput.value = '';
+            displayPost(newPost);
         });
-    </script>
-    <footer>
-        <p>&copy; 2024 All rights reserved.</p>
-    </footer>
-</body>
 
+        // Like a post
+        function likePost(button) {
+            const postDiv = button.parentElement.parentElement;
+            const likesButton = postDiv.querySelector('button:first-child');
+            const likesCount = parseInt(likesButton.textContent.match(/\d+/)[0]) + 1;
+            likesButton.textContent = `❤️ Like (${likesCount})`;
+        }
+
+        // Add a comment to a post
+        function addComment(button) {
+            const postDiv = button.parentElement.parentElement;
+            const commentInput = postDiv.querySelector('.comment-input input');
+            const commentContent = commentInput.value;
+            if (commentContent) {
+                const comment = document.createElement('div');
+                comment.className = 'comment';
+                comment.textContent = commentContent;
+                postDiv.querySelector('.comments').appendChild(comment);
+                commentInput.value = ''; // Clear the input
+            }
+        }
+    </script>
+</body>
 </html>
-   
