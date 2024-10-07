@@ -3,274 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micro-Blogging App</title>
+    <title>Microblog</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            margin: 20px;
+            background-color: #f4f4f4; /* Light gray background */
         }
-
-        header {
-            background-color: #282c34;
-            color: white;
+        .container {
+            max-width: 600px;
+            background-color: #ffffff; /* White background for the container */
             padding: 20px;
-            text-align: center;
-        }
-
-        .content {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .user-profile, .feed {
-            border: 1px solid #ccc;
-            padding: 20px;
-            width: 45%;
-            background: white;
             border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
-
-        .user-posts {
-            margin-top: 10px;
+        #inputField {
+            width: calc(100% - 100px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc; /* Light border */
+            border-radius: 4px; /* Rounded corners */
+            display: inline-block;
         }
-
-        input {
-            margin-right: 10px;
+        #addPost {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #28a745; /* Green background for the button */
+            color: white; /* White text */
+            border: none;
+            border-radius: 4px; /* Rounded corners */
+            display: inline-block;
+        }
+        #addPost:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        .emoji-button {
+            cursor: pointer;
+            font-size: 20px;
             padding: 5px;
-            width: 60%;
         }
-
-        button {
-            padding: 5px 10px;
-        }
-
         .post {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-        }
-
-        .profile img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .post-actions {
-            margin-top: 10px;
-        }
-
-        .post-actions button {
-            margin-right: 10px;
-            background-color: #f0f0f0;
-            border: none;
-            cursor: pointer;
-        }
-
-        .post-actions button:hover {
-            background-color: #ddd;
-        }
-
-        .login-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-
-        .login-container h2 {
-            margin-bottom: 20px;
-        }
-
-        .login-container input {
-            width: 200px;
-            margin: 5px 0;
-            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .login-container button {
             padding: 10px;
-            background-color: #282c34;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .login-container button:hover {
-            background-color: #3c4043;
-        }
-
-        .error-message {
-            color: red;
             margin-top: 10px;
+            border-radius: 4px; /* Rounded corners */
+            background-color: #f9f9f9; /* Light background for posts */
         }
-
-        .emoji-container {
-            margin-top: 10px;
-        }
-
-        .emoji-container button {
+        .like-button, .dislike-button, .like-comment-button, .dislike-comment-button {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 20px;
-            margin: 0 5px;
+            font-size: 14px;
+        }
+        .like-button {
+            color: blue;
+        }
+        .dislike-button {
+            color: red;
+        }
+        .comment-section {
+            margin-top: 10px;
+        }
+        .comment-input {
+            width: calc(80% - 90px);
+            padding: 5px;
+            margin-right: 5px;
+            border: 1px solid #ccc; /* Light border */
+            border-radius: 4px; /* Rounded corners */
+            display: inline-block;
+        }
+        .comment-button {
+            padding: 5px;
+            cursor: pointer;
+            background-color: #007bff; /* Blue background for comment button */
+            color: white; /* White text */
+            border: none;
+            border-radius: 4px; /* Rounded corners */
+        }
+        .comment-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .comment {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        .comment-actions {
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Micro-Blogging App</h1>
-    </header>
-
-    <div id="loginContainer" class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-        <p id="errorMessage" class="error-message"></p>
-    </div>
-
-    <div id="appContainer" class="content" style="display: none;">
-        <div class="user-profile" id="userProfile">
-            <h2>Alice</h2>
-            <form id="postForm">
-                <input type="text" id="newPostContent" placeholder="Write a new post..." required>
-                <button type="submit">Post</button>
-            </form>
-            <div class="emoji-container">
-                <span>Select an emoji: </span>
-                <button onclick="addEmoji('😊')">😊</button>
-                <button onclick="addEmoji('❤️')">❤️</button>
-                <button onclick="addEmoji('😂')">😂</button>
-                <button onclick="addEmoji('😢')">😢</button>
-                <button onclick="addEmoji('😎')">😎</button>
-            </div>
-            <div class="user-posts" id="userPosts"></div>
-        </div>
-
-        <div class="feed" id="feed">
-            <h2>Your Feed</h2>
-        </div>
+    <h1>Microblog</h1>
+    <div class="container">
+        <input id="inputField" type="text" placeholder="What's on your mind?">
+        <button id="addPost">Post</button>
+        <span class="emoji-button" onclick="addEmoji('😊')">😊</span>
+        <span class="emoji-button" onclick="addEmoji('❤')">❤</span>
+        <span class="emoji-button" onclick="addEmoji('😂')">😂</span>
+        <span class="emoji-button" onclick="addEmoji('😢')">😢</span>
+        <div id="postContainer"></div>
     </div>
 
     <script>
-        const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const appContainer = document.getElementById('appContainer');
-        const loginContainer = document.getElementById('loginContainer');
-        const postForm = document.getElementById('postForm');
-        const newPostContent = document.getElementById('newPostContent');
-        const userPosts = document.getElementById('userPosts');
-        const feed = document.getElementById('feed');
+        const addPostButton = document.getElementById('addPost');
+        const postContainer = document.getElementById('postContainer');
+        const inputField = document.getElementById('inputField');
 
-        // Dummy user credentials
-        const USERNAME = 'Doni';
-        const PASSWORD = 'password123';
-
-        // Handle login submission
-        loginForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Check for valid credentials
-            if (username === USERNAME && password === PASSWORD) {
-                localStorage.setItem('loggedIn', true);
-                loginContainer.style.display = 'none';
-                appContainer.style.display = 'flex';
-            } else {
-                errorMessage.textContent = 'Invalid username or password. Please try again.';
-            }
-        });
-
-        // User profile information
-        const userProfile = {
-            name: 'Doni',
-            image: 'https://i1.wp.com/godofindia.com/wp-content/uploads/2017/05/ms-dhoni-6.jpg' // Placeholder image URL
+        const addEmoji = (emoji) => {
+            inputField.value += emoji; // Add selected emoji to input field
+            inputField.focus(); // Keep focus on input field
         };
 
-        // Function to create a new post
-        function createPost(author, content) {
-            const post = {
-                author: author.name,
-                image: author.image,
-                content: content,
-                timestamp: Date.now(),
-                likes: 0,
-                dislikes: 0
-            };
-            return post;
-        }
+        addPostButton.addEventListener('click', function() {
+            const postText = inputField.value.trim();
+            if (postText === "") return; // Prevent empty posts
 
-        // Function to display a post
-        function displayPost(post, isFeed = false) {
             const postDiv = document.createElement('div');
-            postDiv.className = 'post';
+            postDiv.classList.add('post');
             postDiv.innerHTML = `
-                <div class="profile">
-                    <img src="${post.image}" alt="${post.author}'s profile picture">
-                    <h3>${post.author}</h3>
+                <p>${postText}</p>
+                <button class="like-button">Like (<span class="like-count">0</span>)</button>
+                <button class="dislike-button">Dislike (<span class="dislike-count">0</span>)</button>
+                <div class="comment-section">
+                    <input type="text" class="comment-input" placeholder="Add a comment...">
+                    <button class="comment-button">Comment</button>
                 </div>
-                <p>${post.content}</p>
-                <p><small>${new Date(post.timestamp).toLocaleString()}</small></p>
-                <div class="post-actions">
-                    <button onclick="likePost(this)">👍 Like (${post.likes})</button>
-                    <button onclick="dislikePost(this)">👎 Dislike (${post.dislikes})</button>
-                </div>
+                <div class="comments"></div>
+                <p>Comments: <span class="comment-count">0</span></p>
             `;
-            if (isFeed) {
-                feed.appendChild(postDiv);
-            } else {
-                userPosts.appendChild(postDiv);
-            }
-        }
+            postContainer.appendChild(postDiv);
+            inputField.value = "";
 
-        // Handle post submission
-        postForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const content = newPostContent.value;
-            const newPost = createPost(userProfile, content);
-            newPostContent.value = '';
-            displayPost(newPost);
-            displayPost(newPost, true); // Also display in feed
+            const likeButton = postDiv.querySelector('.like-button');
+            const likeCount = postDiv.querySelector('.like-count');
+            const dislikeButton = postDiv.querySelector('.dislike-button');
+            const dislikeCount = postDiv.querySelector('.dislike-count');
+            const commentInput = postDiv.querySelector('.comment-input');
+            const commentButton = postDiv.querySelector('.comment-button');
+            const commentsContainer = postDiv.querySelector('.comments');
+            const commentCount = postDiv.querySelector('.comment-count');
+
+            likeButton.addEventListener('click', function() {
+                const currentCount = parseInt(likeCount.innerText);
+                likeCount.innerText = currentCount + 1; // Increment the like count
+            });
+
+            dislikeButton.addEventListener('click', function() {
+                const currentCount = parseInt(dislikeCount.innerText);
+                dislikeCount.innerText = currentCount + 1; // Increment the dislike count
+            });
+
+            commentButton.addEventListener('click', function() {
+                const commentText = commentInput.value.trim();
+                if (commentText === "") return; // Prevent empty comments
+
+                const commentDiv = document.createElement('div');
+                commentDiv.classList.add('comment');
+                commentDiv.innerHTML = `
+                    <span>${commentText}</span>
+                    <div class="comment-actions">
+                        <button class="like-comment-button">Like (<span class="comment-like-count">0</span>)</button>
+                        <button class="dislike-comment-button">Dislike (<span class="comment-dislike-count">0</span>)</button>
+                    </div>
+                `;
+                commentsContainer.appendChild(commentDiv);
+                commentInput.value = ""; // Clear the input
+
+                // Update comment count
+                const currentCommentCount = parseInt(commentCount.innerText);
+                commentCount.innerText = currentCommentCount + 1;
+
+                const likeCommentButton = commentDiv.querySelector('.like-comment-button');
+                const commentLikeCount = commentDiv.querySelector('.comment-like-count');
+                const dislikeCommentButton = commentDiv.querySelector('.dislike-comment-button');
+                const commentDislikeCount = commentDiv.querySelector('.comment-dislike-count');
+
+                likeCommentButton.addEventListener('click', function() {
+                    const currentCommentLikeCount = parseInt(commentLikeCount.innerText);
+                    commentLikeCount.innerText = currentCommentLikeCount + 1; // Increment the like count for the comment
+                });
+
+                dislikeCommentButton.addEventListener('click', function() {
+                    const currentCommentDislikeCount = parseInt(commentDislikeCount.innerText);
+                    commentDislikeCount.innerText = currentCommentDislikeCount + 1; // Increment the dislike count for the comment
+                });
+            });
         });
-
-        // Add emoji to the post content
-        function addEmoji(emoji) {
-            newPostContent.value += emoji;
-            newPostContent.focus(); // Keep the focus on the input field
-        }
-
-        // Like and Dislike functions
-        function likePost(button) {
-            const postDiv = button.parentElement.parentElement;
-            const likesButton = postDiv.querySelector('button:first-child');
-            const likesCount = parseInt(likesButton.textContent.match(/\d+/)[0]) + 1;
-            likesButton.textContent = `👍 Like (${likesCount})`;
-        }
-
-        function dislikePost(button) {
-            const postDiv = button.parentElement.parentElement;
-            const dislikesButton = postDiv.querySelector('button:last-child');
-            const dislikesCount = parseInt(dislikesButton.textContent.match(/\d+/)[0]) + 1;
-            dislikesButton.textContent = `👎 Dislike (${dislikesCount})`;
-        }
     </script>
 </body>
 </html>
