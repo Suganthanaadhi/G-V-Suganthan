@@ -1,1 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microblogging App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00aaff, #0077ff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            transition: background 0.5s;
+        }
+
+        header {
+            background-color: #003366;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 2.2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        header:hover {
+            transform: translateY(-2px);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        main:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        #login-form,
+        #user-dashboard {
+            margin-bottom: 2rem;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: #003366;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        textarea,
+        button {
+            margin: 0.5rem 0;
+            padding: 0.7rem;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #00aaff;
+            box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+            outline: none;
+        }
+
+        button {
+            background-color: #003366;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #00509e;
+            transform: translateY(-2px);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            background-color: #f0f8ff;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        li:hover {
+            background-color: #e6f7ff;
+            transform: translateY(-1px);
+        }
+
+        .timestamp {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .like-dislike {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        .comment-section {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .comment-input {
+            width: calc(100% - 90px);
+            border-radius: 5px;
+            margin-right: 5px;
+            padding: 5px;
+        }
+
+        .comment-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .comment-btn {
+            width: 80px;
+        }
+
+        .toggle-comment-emoji-btn {
+            width: 40px;
+            margin-left: 10px;
+        }
+
+        .comment-icons {
+            margin-top: 0.5rem;
+        }
+
+        .comment-icon {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        .emoji-picker {
+            display: none;
+            flex-wrap: wrap;
+            cursor: pointer;
+            margin-top: 5px;
+            border: 1px solid #a63f3f;
+            padding: 10px;
+            background-color: #fff;
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .emoji {
+            font-size: 20px;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Microblogging App</h1>
+    </header>
+    <main>
+        <div id="login-form">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button id="login-btn">Login</button>
+            <p id="login-error" style="color: red; display: none;">Invalid username or password!</p>
+        </div>
+        <div id="user-dashboard" style="display: none;">
+            <h2>Welcome, <span id="user-username"></span>!</h2>
+            <textarea id="post-content" placeholder="Write your post..." required></textarea><br>
+            <button id="toggle-emoji-btn">😊</button>
+            <div class="emoji-picker" id="emoji-picker">
+                <span class="emoji">😀</span>
+                <span class="emoji">😁</span>
+                <span class="emoji">😂</span>
+                <span class="emoji">🤣</span>
+                <span class="emoji">😃</span>
+                <span class="emoji">😄</span>
+                <span class="emoji">😅</span>
+                <span class="emoji">😆</span>
+                <span class="emoji">😉</span>
+                <span class="emoji">😊</span>
+                <span class="emoji">😍</span>
+                <span class="emoji">😎</span>
+                <span class="emoji">😔</span>
+                <span class="emoji">😠</span>
+                <span class="emoji">😢</span>
+                <span class="emoji">😩</span>
+                <span class="emoji">😡</span>
+                <span class="emoji">🤔</span>
+                <span class="emoji">👍</span>
+                <span class="emoji">👎</span>
+                <span class="emoji">💔</span>
+                <span class="emoji">🎉</span>
+            </div>
+            <input type="file" id="media-input" accept="image/*, video/*, audio/*">
+            <button id="post-btn">Post</button>
+            <button id="logout-btn">Logout</button>
+        </div>
+        <div id="feed">
+            <h2>Feed</h2>
+            <ul id="post-list"></ul>
+        </div>
+    </main>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('login-btn');
+        const logoutButton = document.getElementById('logout-btn');
+        const loginError = document.getElementById('login-error');
+        const userDashboard = document.getElementById('user-dashboard');
+        const userUsername = document.getElementById('user-username');
+        const postContent = document.getElementById('post-content');
+        const postButton = document.getElementById('post-btn');
+        const mediaInput = document.getElementById('media-input');
+        const postList = document.getElementById('post-list');
+        const emojiPicker = document.getElementById('emoji-picker');
+        const toggleEmojiButton = document.getElementById('toggle-emoji-btn');
+        let currentUser = null;
+
+        // Hardcoded password
+        const correctPassword = 'pass';
+
+        // Event listener for login button 
+        loginButton.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            // Validate the username and password
+            if (username !== '' && password === correctPassword) {
+                currentUser = username;
+                loginForm.style.display = 'none';
+                userDashboard.style.display = 'block';
+                userUsername.textContent = currentUser;
+                loadPosts();
+            } else {
+                // Show error if login fails
+                loginError.style.display = 'block';
+            }
+        });
+
+        // Event listener for logout button
+        logoutButton.addEventListener('click', () => {
+            currentUser = null;
+            userDashboard.style.display = 'none';
+            loginForm.style.display = 'block';
+            loginError.style.display = 'none';
+            postList.innerHTML = ''; // Clear the post feed
+        });
+
+        // Toggle emoji picker visibility
+        toggleEmojiButton.addEventListener('click', () => {
+            emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        // Add selected emoji to the post content
+        emojiPicker.addEventListener('click', (e) => {
+            if (e.target.classList.contains('emoji')) {
+                postContent.value += e.target.textContent; // Add selected emoji to post content
+                emojiPicker.style.display = 'none'; // Hide emoji picker after selection
+            }
+        });
+
+        // Load posts from local storage
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            postList.innerHTML = ''; // Clear previous posts
+
+            posts.forEach((post, index) => {
+                const postItem = document.createElement('li');
+                postItem.innerHTML = `<strong>${post.username}</strong>: ${post.content}
+                                     <p class="timestamp">${post.date} at ${post.time}</p>
+                                     <img src="${post.media}" alt="Media" style="max-width: 100%; height: auto;">
+                                     <div class="like-dislike">
+                                         <button class="like-btn">👍 ${post.likes || 0}</button>
+                                         <button class="dislike-btn">👎 ${post.dislikes || 0}</button>
+                                     </div>
+                                     <div class="comment-section">
+                                         <input type="text" class="comment-input" placeholder="Add a comment..." required>
+                                         <div class="comment-actions">
+                                             <button class="comment-btn">Comment</button>
+                                             <button class="toggle-comment-emoji-btn">😊</button>
+                                         </div>
+                                         <ul class="comment-list"></ul>
+                                         <div class="comment-icons">
+                                             <div class="comment-emoji-picker" style="display: none;">
+                                                 <span class="emoji">😀</span>
+                                                 <span class="emoji">😁</span>
+                                                 <span class="emoji">😂</span>
+                                                 <span class="emoji">🤣</span>
+                                                 <span class="emoji">😃</span>
+                                                 <span class="emoji">😄</span>
+                                                 <span class="emoji">😅</span>
+                                                 <span class="emoji">😆</span>
+                                                 <span class="emoji">😉</span>
+                                                 <span class="emoji">😊</span>
+                                                 <span class="emoji">😍</span>
+                                                 <span class="emoji">😎</span>
+                                                 <span class="emoji">😔</span>
+                                                 <span class="emoji">😠</span>
+                                                 <span class="emoji">😢</span>
+                                                 <span class="emoji">😩</span>
+                                                 <span class="emoji">😡</span>
+                                                 <span class="emoji">🤔</span>
+                                                 <span class="emoji">👍</span>
+                                                 <span class="emoji">👎</span>
+                                                 <span class="emoji">💔</span>
+                                                 <span class="emoji">🎉</span>
+                                             </div>
+                                         </div>
+                                     </div>`;
+                postList.appendChild(postItem);
+
+                // Add like functionality
+                const likeBtn = postItem.querySelector('.like-btn');
+                likeBtn.addEventListener('click', () => {
+                    post.likes = (post.likes || 0) + 1;
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    loadPosts(); // Refresh posts to show updated like count
+                });
+
+                // Add dislike functionality
+                const dislikeBtn = postItem.querySelector('.dislike-btn');
+                dislikeBtn.addEventListener('click', () => {
+                    post.dislikes = (post.dislikes || 0) + 1;
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    loadPosts(); // Refresh posts to show updated dislike count
+                });
+
+                // Add comment functionality
+                const commentInput = postItem.querySelector('.comment-input');
+                const commentBtn = postItem.querySelector('.comment-btn');
+                const commentList = postItem.querySelector(`.comment-list`);
+
+                commentBtn.addEventListener('click', () => {
+                    const commentContent = commentInput.value.trim();
+                    if (commentContent) {
+                        const comment = {
+                            username: currentUser,
+                            content: commentContent,
+                            date: new Date().toLocaleDateString(),
+                            time: new Date().toLocaleTimeString(),
+                        };
+                        post.comments = post.comments || [];
+                        post.comments.push(comment);
+                        localStorage.setItem('posts', JSON.stringify(posts));
+                        commentInput.value = ''; // Clear input field
+                        loadPosts(); // Refresh posts to show new comment
+                    }
+                });
+
+                // Toggle comment emoji picker
+                const toggleCommentEmojiBtn = postItem.querySelector('.toggle-comment-emoji-btn');
+                const commentEmojiPicker = postItem.querySelector('.comment-emoji-picker');
+
+                toggleCommentEmojiBtn.addEventListener('click', () => {
+                    commentEmojiPicker.style.display = commentEmojiPicker.style.display === 'none' ? 'flex' : 'none';
+                });
+
+                // Add selected emoji to comment
+                commentEmojiPicker.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('emoji')) {
+                        commentInput.value += e.target.textContent; // Add selected emoji to comment
+                        commentEmojiPicker.style.display = 'none'; // Hide emoji picker after selection
+                    }
+                });
+
+                // Display comments
+                if (post.comments) {
+                    post.comments.forEach(comment => {
+                        const commentItem = document.createElement('li');
+                        commentItem.innerHTML = `<strong>${comment.username}</strong>: ${comment.content}
+                                                 <p class="timestamp">${comment.date} at ${comment.time}</p>`;
+                        commentList.appendChild(commentItem);
+                    });
+                }
+            });
+        }
+
+        // Post functionality
+        postButton.addEventListener('click', () => {
+            const content = postContent.value.trim();
+            const mediaFile = mediaInput.files[0];
+
+            if (content || mediaFile) {
+                const newPost = {
+                    username: currentUser,
+                    content: content,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
+                    media: mediaFile ? URL.createObjectURL(mediaFile) : '',
+                    comments: [],
+                    likes: 0,
+                    dislikes: 0
+                };
+
+                // Save the post to local storage
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push(newPost);
+                localStorage.setItem('posts', JSON.stringify(posts));
+
+                // Clear input fields
+                postContent.value = '';
+                mediaInput.value = ''; // Clear media input
+                loadPosts(); // Refresh posts to show the new post
+            }
+        });
+
+        // Load posts on page load
+        window.onload = () => {
+            loadPosts();
+            emojiPicker.style.display = 'none'; // Hide emoji picker on load
+        };
+    </script>
+</body>
+
+</html>
 
