@@ -266,6 +266,31 @@
                 font-size: 1em;
             }
         }
+
+        .gradient-text {
+            font-size: 4rem;
+            /* Adjust the size as needed */
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff007f, #00ffff, #007fff, #ff7f00, #ff007f);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientAnimation 8s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
     </style>
     <script>
         // Function to open links in a new tab
@@ -308,55 +333,22 @@
 <body>
     <div class="header">
         <h1>WELCOME TO MY HOME PAGE</h1>
-        
-        <h1>I'M G.V.SUGANTHAN</h1>
+
+        <h3 class="gradient-text">I'M G.V.SUGANTHAN</h3>
         <p>Explore my Full-Stack Web Development Projects</p>
     </div>
 
     <div class="container">
-        <a class="button" onmouseenter="showDetails(0)" onmouseleave="hideDetails()" onclick="portfolio()">Portfolio Website</a>
-        <a class="button" onmouseenter="showDetails(1)" onmouseleave="hideDetails()" onclick="todolist()">To-Do List Application</a>
-        <a class="button" onmouseenter="showDetails(2)" onmouseleave="hideDetails()" onclick="microbloggingapp()">Micro-Blogging Application</a>
-        <a class="button" onmouseenter="showDetails(3)" onmouseleave="hideDetails()" onclick="food_delivery()">Food Delivery Application</a>
+        <a class="button" onmouseenter="showDetails(0)" onmouseleave="hideDetails()" onclick="portfolio()">Portfolio
+            Website</a>
+        <a class="button" onmouseenter="showDetails(1)" onmouseleave="hideDetails()" onclick="todolist()">To-Do List
+            Application</a>
+        <a class="button" onmouseenter="showDetails(2)" onmouseleave="hideDetails()"
+            onclick="microbloggingapp()">Micro-Blogging Application</a>
+        <a class="button" onmouseenter="showDetails(3)" onmouseleave="hideDetails()" onclick="food_delivery()">Food
+            Delivery Application</a>
     </div>
-
-    <div class="feature" id="portfolio">
-        <h2>Portfolio Website</h2>
-        <p>This is a responsive portfolio website showcasing my work and skills. Features include:</p>
-        <ul>
-            <li>Responsive design with smooth animations.</li>
-            <li>Interactive gallery to display projects.</li>
-            <li>Contact form for inquiries.</li>
-        </ul>
-    </div>
-    <div class="feature" id="todolist">
-        <h2>To-Do List Application</h2>
-        <p>A simple and interactive to-do list application that allows users to:</p>
-        <ul>
-            <li>Add, delete, and edit tasks.</li>
-            <li>Mark tasks as completed.</li>
-            <li>Persist data using local storage.</li>
-        </ul>
-    </div>
-    <div class="feature" id="microbloggingapp">
-        <h2>Micro-Blogging Application</h2>
-        <p>A platform for users to share short posts and connect with others. Features include:</p>
-        <ul>
-            <li>User authentication for secure login.</li>
-            <li>Real-time updates using WebSockets.</li>
-            <li>Image uploads for posts.</li>
-        </ul>
-    </div>
-    <div class="feature" id="food_delivery">
-        <h2>Food Delivery Application</h2>
-        <p>A full-stack application for ordering food online. Key features include:</p>
-        <ul>
-            <li>Restaurant selection and menu display.</li>
-            <li>Cart functionality for seamless ordering.</li>
-            <li>User-friendly interface with smooth animations.</li>
-        </ul>
-    </div>
-
+</div>
     <div class="footer">
         <p>© 2024 G. V. Suganthan. All Rights Reserved.</p>
     </div>
