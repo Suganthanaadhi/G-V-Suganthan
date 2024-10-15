@@ -1,97 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fswd programs</title>
+    <title>FSWD Programs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-        background-image: url(pexels-jplenio-1103970.jpg);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        color: #333;
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        min-height: 100vh;
-        text-align: center;
+            background-image: url(pexels-jplenio-1103970.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeInHeader 1s forwards;
         }
 
         h1 {
             color: #2c3e50;
-            margin-top: 50px;
+            margin: 10px 0;
             font-size: 2.5em;
-            text-align: center;
+            animation: fadeIn 1s ease-in;
         }
 
         p {
             color: #7f8c8d;
             font-size: 1.2em;
             margin: 20px 0;
-            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            display: flex; /* Changed to flex for horizontal layout */
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeInContainer 1s 0.5s forwards;
         }
 
         .button {
             text-decoration: none;
             color: #fff;
-            background-color: #3498db;
             font-size: 1.2em;
-            display: inline-block;
-            margin: 10px 0;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-            text-align: center;
-            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            animation: popIn 0.5s forwards;
+        }
+
+        /* Gradient backgrounds for buttons */
+        .button:nth-child(1) {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .button:nth-child(2) {
+            background: linear-gradient(45deg, #f1c40f, #f39c12);
+        }
+
+        .button:nth-child(3) {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+
+        .button:nth-child(4) {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
         }
 
         .button:hover {
-            background-color: #2980b9;
+            transform: scale(1.05);
+            opacity: 0.9;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+        .feature {
+            display: none; /* Initially hidden */
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            text-align: left;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         .footer {
             margin-top: 50px;
             font-size: 0.9em;
             color: #95a5a6;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInFooter 1s 1s forwards;
+        }
+
+        @keyframes fadeInHeader {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInContainer {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInFooter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
     <script>
-        function portfolio(){
+        function portfolio() {
+            showFeature(1);
             window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex1/index.html', '_blank');
         }
-        function todolist(){
-            window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex2/index.html','_blank');
-}
-         function microbloggingapp(){
-            window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex3/index.html','_blank');
-}
-        function food_delivary(){
-            window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex4/index.html','_blank');
-}
+
+        function todolist() {
+            showFeature(2);
+            window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex2/index.html', '_blank');
+        }
+
+        function microbloggingapp() {
+            showFeature(3);
+            window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex3/index.html', '_blank');
+        }
+
+        function food_delivery() {
+            showFeature(4);
+            window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex4/index.html', '_blank');
+        }
+
+        function showFeature(buttonIndex) {
+            // Hide all feature sections first
+            const features = document.querySelectorAll('.feature');
+            features.forEach((feature) => {
+                feature.style.display = 'none';
+                feature.style.opacity = '0';
+            });
+
+            // Show the selected feature section
+            const selectedFeature = document.getElementById(`feature${buttonIndex}`);
+            selectedFeature.style.display = 'block';
+            setTimeout(() => {
+                selectedFeature.style.opacity = '1';
+            }, 10); // Small delay for the opacity transition
+        }
     </script>
 </head>
-<body>
-    <h1>WELCOME TO MY HOME PAGE</h1>
-      <h1>I'M G.V.SUGANTHAN</h1>
-    <p>This website contains full stack web development exercises</p>
-    <span class="button" onclick="portfolio()">1) MY-PORTFOLIO</span>
-    <br>
-    <span class="button" onclick="todolist()">2) TODO-List</span>
-    <br>
-    <span class="button" onclick="microbloggingapp()">3) MICROBLOGGING-APP</span>
-    <br>
-     <span class="button" onclick="food_delivary()">4) FOOD_DELIVARY</span>
-    <br>
 
+<body>
+    <div class="header">
+        <h1>WELCOME TO MY HOME PAGE</h1>
+        <h1>I'M G.V.SUGANTHAN</h1>
+        <p>This website contains full stack web development exercises</p>
+    </div>
+    <div class="container">
+        <span class="button" onmouseover="showFeature(1)">1) MY PORTFOLIO</span>
+        <span class="button" onmouseover="showFeature(2)">2) TODO LIST</span>
+        <span class="button" onmouseover="showFeature(3)">3) MICROBLOGGING APP</span>
+        <span class="button" onmouseover="showFeature(4)">4) FOOD DELIVERY</span>
+    </div>
+
+    <!-- Feature Descriptions -->
+    <div class="feature" id="feature1">
+        <h2>My Portfolio</h2>
+        <p>This section showcases my skills and projects, including:</p>
+        <ul>
+            <li>Web design and development</li>
+            <li>Responsive design using HTML, CSS, and JavaScript</li>
+            <li>Integrating various APIs for enhanced functionality</li>
+            <li>Technologies used: HTML, CSS, JavaScript, GitHub Pages</li>
+        </ul>
+    </div>
+
+    <div class="feature" id="feature2">
+        <h2>Todo List</h2>
+        <p>This is a simple todo list application that allows users to:</p>
+        <ul>
+            <li>Add, edit, and delete tasks</li>
+            <li>Mark tasks as complete</li>
+            <li>Filter tasks by completion status</li>
+            <li>Technologies used: HTML, CSS, JavaScript, Local Storage</li>
+        </ul>
+    </div>
+
+    <div class="feature" id="feature3">
+        <h2>Microblogging App</h2>
+        <p>This microblogging application allows users to:</p>
+        <ul>
+            <li>Create and manage posts</li>
+            <li>Follow other users and see their posts in a feed</li>
+            <li>Comment on and like posts</li>
+            <li>Technologies used: HTML, CSS, JavaScript, Node.js, Express, MongoDB</li>
+        </ul>
+    </div>
+
+    <div class="feature" id="feature4">
+        <h2>Food Delivery App</h2>
+        <p>This is a food delivery application that includes:</p>
+        <ul>
+            <li>Restaurant selection</li>
+            <li>Menu display and order placement</li>
+            <li>Real-time order tracking</li>
+            <li>Technologies used: HTML, CSS, JavaScript, React, Firebase</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for visiting my page! I hope you enjoy exploring my projects.</p>
+    </div>
 </body>
+
 </html>
