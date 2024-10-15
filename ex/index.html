@@ -12,7 +12,9 @@
         /* Global Styles */
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
+            background-size: 200% 200%;
+            animation: gradientBackground 15s ease infinite;
             color: #333;
             margin: 0;
             padding: 0;
@@ -27,13 +29,26 @@
             transition: background 0.5s ease-in-out;
         }
 
+        /* Keyframe Animation for Background Gradient */
+        @keyframes gradientBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
         /* Header Styles */
         .header {
             text-align: center;
             padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             margin: 40px 20px 20px 20px;
             width: 90%;
             max-width: 900px;
@@ -43,16 +58,20 @@
         }
 
         .header h1 {
-            color: #2c3e50;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 10px 0;
             font-size: 3em;
             animation: slideInDown 1s ease-out;
         }
 
         .header p {
-            color: #34495e;
-            font-size: 1.3em;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 20px 0;
+            font-size: 1.3em;
             animation: fadeIn 1.2s ease-in;
         }
 
@@ -133,7 +152,9 @@
         }
 
         .feature h2 {
-            color: #2c3e50;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
             font-size: 2em;
             border-bottom: 2px solid #f1c40f;
@@ -142,7 +163,9 @@
         }
 
         .feature p {
-            color: #7f8c8d;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-size: 1.2em;
             margin-bottom: 15px;
         }
@@ -163,9 +186,9 @@
             font-size: 1em;
             color: #95a5a6;
             padding: 25px 20px;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 900px;
             text-align: center;
@@ -187,6 +210,7 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -197,6 +221,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -234,7 +259,8 @@
                 font-size: 1.8em;
             }
 
-            .feature p, .feature ul li {
+            .feature p,
+            .feature ul li {
                 font-size: 1em;
             }
         }
@@ -261,7 +287,7 @@
         function showFeature(buttonIndex) {
             // Hide all feature sections first
             const features = document.querySelectorAll('.feature');
-            features.forEach((feature) => {
+            features.forEach(feature => {
                 feature.classList.remove('show');
             });
 
@@ -270,14 +296,12 @@
             selectedFeature.classList.add('show');
         }
 
-        // Optional: Add a smooth scroll effect when a button is clicked
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
             const buttons = document.querySelectorAll('.button');
             buttons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const featureId = button.getAttribute('onclick').match(/'([^']+)'/)[1];
-                    const featureElement = document.getElementById(`feature${featureId.charAt(featureId.length - 1)}`);
-                    featureElement.scrollIntoView({ behavior: 'smooth' });
+                    showFeature(button.dataset.index);
                 });
             });
         });
@@ -285,66 +309,65 @@
 </head>
 
 <body>
-    <div class="header">
+    <header class="header">
+        
         <h1>WELCOME TO MY HOME PAGE</h1>
+        
         <h1>I'M G.V.SUGANTHAN</h1>
-        <p>This website contains full stack web development exercises</p>
-    </div>
+        <p>Explore my Full-Stack Web Development Projects</p>
+    </header>
+
     <div class="container">
-        <span class="button" onmouseover="showFeature(1)" onclick="portfolio()">1) MY PORTFOLIO</span>
-        <span class="button" onmouseover="showFeature(2)" onclick="todolist()">2) TODO LIST</span>
-        <span class="button" onmouseover="showFeature(3)" onclick="microbloggingapp()">3) MICROBLOGGING APP</span>
-        <span class="button" onmouseover="showFeature(4)" onclick="food_delivery()">4) FOOD DELIVERY</span>
+        <a class="button" data-index="1" onclick="portfolio()">Portfolio Website</a>
+        <a class="button" data-index="2" onclick="todolist()">To-Do List</a>
+        <a class="button" data-index="3" onclick="microbloggingapp()">Microblogging App</a>
+        <a class="button" data-index="4" onclick="food_delivery()">Food Delivery App</a>
     </div>
 
     <!-- Feature Descriptions -->
     <div class="feature" id="feature1">
-        <h2>My Portfolio</h2>
-        <p>This section showcases my skills and projects, including:</p>
+        <h2>Portfolio Website</h2>
+        <p>This website showcases my projects and skills as a web developer.</p>
         <ul>
-            <li>Web design and development</li>
-            <li>Responsive design using HTML, CSS, and JavaScript</li>
-            <li>Integrating various APIs for enhanced functionality</li>
-            <li>Technologies used: HTML, CSS, JavaScript, GitHub Pages</li>
+            <li>Responsive design to support various devices.</li>
+            <li>Interactive elements for a better user experience.</li>
+            <li>Styled with CSS animations for a modern look.</li>
         </ul>
     </div>
 
     <div class="feature" id="feature2">
-        <h2>Todo List</h2>
-        <p>This is a simple todo list application that allows users to:</p>
+        <h2>To-Do List</h2>
+        <p>A simple and effective to-do list application to manage tasks.</p>
         <ul>
-            <li>Add, edit, and delete tasks</li>
-            <li>Mark tasks as complete</li>
-            <li>Filter tasks by completion status</li>
-            <li>Technologies used: HTML, CSS, JavaScript, Local Storage</li>
+            <li>CRUD operations to create, read, update, and delete tasks.</li>
+            <li>Local storage support for data persistence.</li>
+            <li>Dynamic task filtering and sorting.</li>
         </ul>
     </div>
 
     <div class="feature" id="feature3">
         <h2>Microblogging App</h2>
-        <p>This microblogging application allows users to:</p>
+        <p>A platform for users to share short posts and follow others.</p>
         <ul>
-            <li>Create and manage posts</li>
-            <li>Follow other users and see their posts in a feed</li>
-            <li>Comment on and like posts</li>
-            <li>Technologies used: HTML, CSS, JavaScript, Node.js, Express, MongoDB</li>
+            <li>User authentication and profile management.</li>
+            <li>Real-time updates for new posts and interactions.</li>
+            <li>Image uploads and responsive design.</li>
         </ul>
     </div>
 
     <div class="feature" id="feature4">
-        <h2>Food Delivery Application</h2>
-        <p>This is a real-time food delivery application with features like:</p>
+        <h2>Food Delivery App</h2>
+        <p>An application for users to order food from various restaurants.</p>
         <ul>
-            <li>Restaurant selection</li>
-            <li>Menu display and order placement</li>
-            <li>Real-time order tracking</li>
-            <li>Technologies used: HTML, CSS, JavaScript, React, Firebase</li>
+            <li>Restaurant listings with menus and reviews.</li>
+            <li>Shopping cart functionality for orders.</li>
+            <li>Payment integration and order tracking.</li>
         </ul>
     </div>
 
-    <div class="footer">
-        <p>Thank you for visiting my page! I hope you enjoy exploring my projects.</p>
-    </div>
+    <footer class="footer">
+        &copy; 2024 G. V. Suganthan | All Rights Reserved
+    </footer>
 </body>
 
 </html>
