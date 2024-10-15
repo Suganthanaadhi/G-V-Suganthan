@@ -34,9 +34,11 @@
             0% {
                 background-position: 0% 50%;
             }
+
             50% {
                 background-position: 100% 50%;
             }
+
             100% {
                 background-position: 0% 50%;
             }
@@ -283,91 +285,81 @@
             window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex4/index.html', '_blank');
         }
 
-        // Function to show feature descriptions
-        function showFeature(buttonIndex) {
-            // Hide all feature sections first
+        // Function to show feature details
+        function showDetails(index) {
             const features = document.querySelectorAll('.feature');
-            features.forEach(feature => {
-                feature.classList.remove('show');
+            features.forEach((feature, i) => {
+                if (i === index) {
+                    feature.classList.add('show');
+                } else {
+                    feature.classList.remove('show');
+                }
             });
-
-            // Show the selected feature section
-            const selectedFeature = document.getElementById(`feature${buttonIndex}`);
-            selectedFeature.classList.add('show');
         }
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll('.button');
-            buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    showFeature(button.dataset.index);
-                });
-            });
-        });
+        // Function to hide feature details
+        function hideDetails() {
+            const features = document.querySelectorAll('.feature');
+            features.forEach(feature => feature.classList.remove('show'));
+        }
     </script>
 </head>
 
 <body>
-    <header class="header">
-        
+    <div class="header">
         <h1>WELCOME TO MY HOME PAGE</h1>
         
         <h1>I'M G.V.SUGANTHAN</h1>
         <p>Explore my Full-Stack Web Development Projects</p>
-    </header>
+    </div>
 
     <div class="container">
-        <a class="button" data-index="1" onclick="portfolio()">Portfolio Website</a>
-        <a class="button" data-index="2" onclick="todolist()">To-Do List</a>
-        <a class="button" data-index="3" onclick="microbloggingapp()">Microblogging App</a>
-        <a class="button" data-index="4" onclick="food_delivery()">Food Delivery App</a>
+        <a class="button" onmouseenter="showDetails(0)" onmouseleave="hideDetails()" onclick="portfolio()">Portfolio Website</a>
+        <a class="button" onmouseenter="showDetails(1)" onmouseleave="hideDetails()" onclick="todolist()">To-Do List Application</a>
+        <a class="button" onmouseenter="showDetails(2)" onmouseleave="hideDetails()" onclick="microbloggingapp()">Micro-Blogging Application</a>
+        <a class="button" onmouseenter="showDetails(3)" onmouseleave="hideDetails()" onclick="food_delivery()">Food Delivery Application</a>
     </div>
 
-    <!-- Feature Descriptions -->
-    <div class="feature" id="feature1">
+    <div class="feature" id="portfolio">
         <h2>Portfolio Website</h2>
-        <p>This website showcases my projects and skills as a web developer.</p>
+        <p>This is a responsive portfolio website showcasing my work and skills. Features include:</p>
         <ul>
-            <li>Responsive design to support various devices.</li>
-            <li>Interactive elements for a better user experience.</li>
-            <li>Styled with CSS animations for a modern look.</li>
+            <li>Responsive design with smooth animations.</li>
+            <li>Interactive gallery to display projects.</li>
+            <li>Contact form for inquiries.</li>
+        </ul>
+    </div>
+    <div class="feature" id="todolist">
+        <h2>To-Do List Application</h2>
+        <p>A simple and interactive to-do list application that allows users to:</p>
+        <ul>
+            <li>Add, delete, and edit tasks.</li>
+            <li>Mark tasks as completed.</li>
+            <li>Persist data using local storage.</li>
+        </ul>
+    </div>
+    <div class="feature" id="microbloggingapp">
+        <h2>Micro-Blogging Application</h2>
+        <p>A platform for users to share short posts and connect with others. Features include:</p>
+        <ul>
+            <li>User authentication for secure login.</li>
+            <li>Real-time updates using WebSockets.</li>
+            <li>Image uploads for posts.</li>
+        </ul>
+    </div>
+    <div class="feature" id="food_delivery">
+        <h2>Food Delivery Application</h2>
+        <p>A full-stack application for ordering food online. Key features include:</p>
+        <ul>
+            <li>Restaurant selection and menu display.</li>
+            <li>Cart functionality for seamless ordering.</li>
+            <li>User-friendly interface with smooth animations.</li>
         </ul>
     </div>
 
-    <div class="feature" id="feature2">
-        <h2>To-Do List</h2>
-        <p>A simple and effective to-do list application to manage tasks.</p>
-        <ul>
-            <li>CRUD operations to create, read, update, and delete tasks.</li>
-            <li>Local storage support for data persistence.</li>
-            <li>Dynamic task filtering and sorting.</li>
-        </ul>
+    <div class="footer">
+        <p>© 2024 G. V. Suganthan. All Rights Reserved.</p>
     </div>
-
-    <div class="feature" id="feature3">
-        <h2>Microblogging App</h2>
-        <p>A platform for users to share short posts and follow others.</p>
-        <ul>
-            <li>User authentication and profile management.</li>
-            <li>Real-time updates for new posts and interactions.</li>
-            <li>Image uploads and responsive design.</li>
-        </ul>
-    </div>
-
-    <div class="feature" id="feature4">
-        <h2>Food Delivery App</h2>
-        <p>An application for users to order food from various restaurants.</p>
-        <ul>
-            <li>Restaurant listings with menus and reviews.</li>
-            <li>Shopping cart functionality for orders.</li>
-            <li>Payment integration and order tracking.</li>
-        </ul>
-    </div>
-
-    <footer class="footer">
-        &copy; 2024 G. V. Suganthan | All Rights Reserved
-    </footer>
 </body>
 
 </html>
