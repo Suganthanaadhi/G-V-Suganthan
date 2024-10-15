@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FSWD Programs</title>
     <style>
+        /* Importing Google Fonts for better typography */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-image: url(pexels-jplenio-1103970.jpg);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             margin: 0;
             padding: 0;
@@ -20,48 +21,55 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             overflow: hidden;
+            transition: background 0.5s ease-in-out;
         }
 
+        /* Header Styles */
         .header {
             text-align: center;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-            width: 80%;
-            max-width: 800px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            margin: 40px 20px 20px 20px;
+            width: 90%;
+            max-width: 900px;
             opacity: 0;
-            animation: fadeInHeader 1s forwards;
+            animation: fadeInHeader 1.5s forwards;
+            transform: translateY(-30px);
         }
 
-        h1 {
+        .header h1 {
             color: #2c3e50;
             margin: 10px 0;
-            font-size: 2.5em;
-            animation: fadeIn 1s ease-in;
+            font-size: 3em;
+            animation: slideInDown 1s ease-out;
         }
 
-        p {
-            color: #7f8c8d;
-            font-size: 1.2em;
+        .header p {
+            color: #34495e;
+            font-size: 1.3em;
             margin: 20px 0;
+            animation: fadeIn 1.2s ease-in;
         }
 
+        /* Container Styles */
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
-            display: flex; /* Changed to flex for horizontal layout */
+            display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             padding: 20px;
             opacity: 0;
-            animation: fadeInContainer 1s 0.5s forwards;
+            animation: fadeInContainer 1s 1s forwards;
         }
 
+        /* Button Styles */
         .button {
             text-decoration: none;
             color: #fff;
@@ -69,148 +77,210 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
-            border-radius: 10px;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            padding: 20px 25px;
+            border-radius: 15px;
+            transition: transform 0.4s, box-shadow 0.4s, background-position 0.5s;
             cursor: pointer;
-            height: 100%;
             position: relative;
             overflow: hidden;
-            animation: popIn 0.5s forwards;
+            background-size: 200% 200%;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Gradient backgrounds for buttons */
         .button:nth-child(1) {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
         }
 
         .button:nth-child(2) {
-            background: linear-gradient(45deg, #f1c40f, #f39c12);
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
         }
 
         .button:nth-child(3) {
-            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            background: linear-gradient(135deg, #43cea2, #185a9d);
         }
 
         .button:nth-child(4) {
-            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            background: linear-gradient(135deg, #f7971e, #ffd200);
         }
 
+        /* Button Hover Effects */
         .button:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+            background-position: right center;
         }
 
+        /* Feature Styles */
         .feature {
-            display: none; /* Initially hidden */
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            margin-top: 10px;
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 15px auto;
+            max-width: 800px;
             text-align: left;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
+        .feature.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2em;
+            border-bottom: 2px solid #f1c40f;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .feature p {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .feature ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .feature ul li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Footer Styles */
         .footer {
-            margin-top: 50px;
-            font-size: 0.9em;
+            margin: 60px 20px 20px 20px;
+            font-size: 1em;
             color: #95a5a6;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            width: 80%;
-            max-width: 800px;
+            padding: 25px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 900px;
             text-align: center;
             opacity: 0;
-            animation: fadeInFooter 1s 1s forwards;
+            animation: fadeInFooter 1.5s 1.5s forwards;
+            transform: translateY(30px);
         }
 
+        /* Keyframe Animations */
         @keyframes fadeInHeader {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        @keyframes fadeInContainer {
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
             }
-
             to {
                 opacity: 1;
             }
         }
 
-        @keyframes popIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-
+        @keyframes fadeInContainer {
             to {
-                transform: scale(1);
                 opacity: 1;
             }
         }
 
         @keyframes fadeInFooter {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .header p {
+                font-size: 1.1em;
+            }
+
+            .feature h2 {
+                font-size: 1.8em;
+            }
+
+            .feature p, .feature ul li {
+                font-size: 1em;
+            }
+        }
     </style>
     <script>
+        // Function to open links in a new tab
         function portfolio() {
-            showFeature(1);
             window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex1/index.html', '_blank');
         }
 
         function todolist() {
-            showFeature(2);
             window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex2/index.html', '_blank');
         }
 
         function microbloggingapp() {
-            showFeature(3);
             window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex3/index.html', '_blank');
         }
 
         function food_delivery() {
-            showFeature(4);
             window.open('https://suganthanaadhi.github.io/G-V-Suganthan/ex4/index.html', '_blank');
         }
 
+        // Function to show feature descriptions
         function showFeature(buttonIndex) {
             // Hide all feature sections first
             const features = document.querySelectorAll('.feature');
             features.forEach((feature) => {
-                feature.style.display = 'none';
-                feature.style.opacity = '0';
+                feature.classList.remove('show');
             });
 
             // Show the selected feature section
             const selectedFeature = document.getElementById(`feature${buttonIndex}`);
-            selectedFeature.style.display = 'block';
-            setTimeout(() => {
-                selectedFeature.style.opacity = '1';
-            }, 10); // Small delay for the opacity transition
+            selectedFeature.classList.add('show');
         }
+
+        // Optional: Add a smooth scroll effect when a button is clicked
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const featureId = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    const featureElement = document.getElementById(`feature${featureId.charAt(featureId.length - 1)}`);
+                    featureElement.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
     </script>
 </head>
 
@@ -221,10 +291,10 @@
         <p>This website contains full stack web development exercises</p>
     </div>
     <div class="container">
-        <span class="button" onmouseover="showFeature(1)">1) MY PORTFOLIO</span>
-        <span class="button" onmouseover="showFeature(2)">2) TODO LIST</span>
-        <span class="button" onmouseover="showFeature(3)">3) MICROBLOGGING APP</span>
-        <span class="button" onmouseover="showFeature(4)">4) FOOD DELIVERY</span>
+        <span class="button" onmouseover="showFeature(1)" onclick="portfolio()">1) MY PORTFOLIO</span>
+        <span class="button" onmouseover="showFeature(2)" onclick="todolist()">2) TODO LIST</span>
+        <span class="button" onmouseover="showFeature(3)" onclick="microbloggingapp()">3) MICROBLOGGING APP</span>
+        <span class="button" onmouseover="showFeature(4)" onclick="food_delivery()">4) FOOD DELIVERY</span>
     </div>
 
     <!-- Feature Descriptions -->
@@ -262,8 +332,8 @@
     </div>
 
     <div class="feature" id="feature4">
-        <h2>Food Delivery App</h2>
-        <p>This is a food delivery application that includes:</p>
+        <h2>Food Delivery Application</h2>
+        <p>This is a real-time food delivery application with features like:</p>
         <ul>
             <li>Restaurant selection</li>
             <li>Menu display and order placement</li>
