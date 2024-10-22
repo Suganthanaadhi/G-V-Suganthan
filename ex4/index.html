@@ -315,8 +315,9 @@
                 <h3>Order Summary</h3>
                 <div id="order-items"></div>
                 <h4>Total: $<span id="total-amount">0</span></h4>
-                <button onclick="placeOrder()">Place Order</button>
+                <button onclick="placeOrder()" >Place Order</button>
             </div>
+            
         </section>
     </main>
 
@@ -370,11 +371,27 @@
         }
 
         function placeOrder() {
-            alert("Your order has been placed successfully!");
+            window.location.href = "pay.html";
+            alert("Are you confrim your order");
             orderItems = [];
             totalAmount = 0;
             displayOrder();
+           
         }
+        function placeOrder() {
+    const confirmed = confirm("Are you sure you want to confirm your order?");
+    
+    if (confirmed) {
+        window.location.href = "pay.html";
+        orderItems = [];
+        totalAmount = 0;
+        displayOrder();
+    } else {
+        // Optionally show a message or take another action if canceled
+        console.log("Order not confirmed.");
+    }
+}
+
     </script>
 </body>
 
