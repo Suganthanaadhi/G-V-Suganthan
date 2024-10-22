@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zomato-like Order Form</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 60%;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #d32f2f; /* Zomato's red color */
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #b71c1c;
+        }
+        .feedback-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .message {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+            text-align: center;
+        }
+        .thanks-message {
+            font-size: 20px;
+            color: #d32f2f;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .star-rating .star {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .star-rating .star:hover,
+        .star-rating .star.selected {
+            color: #ffc107;
+        }
+        /* Table Styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Place Your Order</h2>
+
+    <form id="orderForm">
+        <!-- Customer Name -->
+        <label for="name">Customer Name:</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+
+        <!-- Address -->
+        <label for="address">Address:</label>
+        <textarea id="address" rows="3" placeholder="Enter your delivery address" required></textarea>
+
+        <!-- Payment Method -->
+        <label for="payment">Payment Method:</label>
+        <select id="payment" required>
+            <option value="">Select a payment method</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+        </select>
+
+        <!-- Credit Card Details -->
+        <div id="creditCardDetails" style="display:none;">
+            <h3>Credit/Debit Card Details</h3>
+            <label for="cardNumber">Card Number:</label>
+            <input type="text" id="cardNumber" placeholder="4111 1111 1111 1111" required>
+
+            <label for="expiryDate">Expiry Date (MM/YY):</label>
+            <input type="text" id="expiryDate" placeholder="12/25" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" placeholder="123" required>
+        </div>
+
+        <!-- Star Rating -->
+        <label>Rate Us (1 to 5 stars):</label>
+        <div class="star-rating" id="starRating">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+        </div>
+
+        <!-- Feedback -->
+        <label for="feedback">Your Feedback:</label>
+        <textarea id="feedback" rows="3" placeholder="Share your experience"></textarea>
+
+        <!-- Place Order Button -->
+        <button type="submit">Place Order</button>
+    </form>
+
+    <div class="feedback-section">
+        <h3>Your Order Summary</h3>
+        <div id="orderSummaryContainer" style="display:none;">
+            <table id="orderSummary">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="message" id="message"></div>
+    <div class="thanks-message" id="thanksMessage"></div>
+</div>
+
+<script>
+    // Show credit card details input if credit/debit card is selected
+    const paymentSelect = document.getElementById('payment');
+    const creditCardDetails = document.getElementById('creditCardDetails');
+
+    paymentSelect.addEventListener('change', function () {
+        if (this.value === 'Credit Card' || this.value === 'Debit Card') {
+            creditCardDetails.style.display = 'block';
+        } else {
+            creditCardDetails.style.display = 'none';
+        }
+    });
+
+    // Star rating interaction
+    const stars = document.querySelectorAll('.star-rating .star');
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+        star.addEventListener('click', function () {
+            selectedRating = this.getAttribute('data-value');
+            updateStarRating(selectedRating);
+        });
+
+        star.addEventListener('mouseover', function () {
+            updateStarRating(this.getAttribute('data-value'));
+        });
+
+        star.addEventListener('mouseout', function () {
+            updateStarRating(selectedRating);
+        });
+    });
+
+    function updateStarRating(rating) {
+        stars.forEach(star => {
+            if (star.getAttribute('data-value') <= rating) {
+                star.classList.add('selected');
+            } else {
+                star.classList.remove('selected');
+            }
+        });
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission
+
+        // Get input values
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const payment = document.getElementById('payment').value;
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+        const feedback = document.getElementById('feedback').value;
+
+        // Simple validation
+        if (name && address && payment && selectedRating) {
+            // Validate credit card information if applicable
+            if (payment === 'Credit Card' || payment === 'Debit Card') {
+                if (!validateCard(cardNumber, expiryDate, cvv)) {
+                    document.getElementById('message').innerHTML = "Invalid card details!";
+                    return;
+                }
+            }
+
+            // Prepare order summary
+            const orderSummary = `
+                <tr>
+                    <th>Name:</th>
+                    <td>${name}</td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>${address}</td>
+                </tr>
+                <tr>
+                    <th>Payment Method:</th>
+                    <td>${payment}</td>
+                </tr>
+                ${payment === 'Credit Card' || payment === 'Debit Card' ? `
+                <tr>
+                    <th>Card Number:</th>
+                    <td>${cardNumber.replace(/\d(?=\d{4})/g, '*')} </td>
+                </tr>
+                <tr>
+                    <th>Expiry Date:</th>
+                    <td>${expiryDate}</td>
+                </tr>
+                <tr>
+                    <th>CVV:</th>
+                    <td>${cvv.replace(/./g, '*')}</td>
+                </tr>
+                ` : ''}
+                <tr>
+                    <th>Rating:</th>
+                    <td>${selectedRating} star(s)</td>
+                </tr>
+                <tr>
+                    <th>Feedback:</th>
+                    <td>${feedback}</td>
+                </tr>
+            `;
+            
+            // Show order summary
+            document.querySelector('#orderSummary tbody').innerHTML = orderSummary;
+            document.getElementById('orderSummaryContainer').style.display = 'block';
+
+            // Show success message
+            document.getElementById('message').innerHTML = "Thank you for your order!";
+            document.getElementById('thanksMessage').innerHTML = "We appreciate your feedback!";
+        } else {
+            document.getElementById('message').innerHTML = "Please fill in all fields!";
+        }
+    });
+
+    // Function to validate credit card details
+    function validateCard(cardNumber, expiryDate, cvv) {
+        const cardNumberRegex = /^[0-9]{16}$/;
+        const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        const cvvRegex = /^[0-9]{3}$/;
+
+        return cardNumberRegex.test(cardNumber.replace(/\s/g, '')) &&
+               expiryDateRegex.test(expiryDate) &&
+               cvvRegex.test(cvv);
+    }
+</script>
+
+</body>
+</html>
