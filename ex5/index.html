@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESELLIT Marketplace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>RESELLIT   Marketplace</h1>
+        <nav>
+            <a href="#" onclick="showSection('product-list-section')">Home</a>
+            <a href="#" onclick="showSection('sell-product-section')">Sell Product</a>
+            <a href="#" onclick="showSection('cart-section')" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Product List Section -->
+        <section id="product-list-section">
+            <h2>Available Products</h2>
+
+            <label for="price-filter">Max Price:</label>
+            <input type="number" id="price-filter" oninput="filterProducts()" placeholder="Enter max price" />
+            <p id="price-display">Max Price: $0</p>
+
+            <div id="product-list" class="product-container"></div>
+        </section>
+
+        <!-- Sell Product Section -->
+        <section id="sell-product-section" class="hidden">
+            <h2>Sell Your Product</h2>
+            <form id="sell-product-form" onsubmit="addProduct(); return false;">
+                <input type="text" id="product-name" placeholder="Product Name" required>
+                <input type="number" id="product-price" placeholder="Price" required>
+                <textarea id="product-description" placeholder="Description" required></textarea>
+                <input type="file" id="product-image" accept="image/*" required>
+                <button type="submit">Add Product</button>
+            </form>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cart-section" class="hidden">
+            <h2>Cart</h2>
+            <ul id="cart-items"></ul>
+            <p>Total: $<span id="total-price">0</span></p>
+            <button onclick="proceedToPayment()">Proceed to Payment</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Classified Marketplace</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

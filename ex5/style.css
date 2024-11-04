@@ -1,0 +1,245 @@
+* {
+    box-sizing: border-box; /* Make sure padding and borders are included in element's total width and height */
+    margin: 0;             /* Reset default margin */
+    padding: 0;            /* Reset default padding */
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light grey background */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* This will push the footer to the bottom */
+}
+
+header {
+    background-color: #008080; /* Teal blue */
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Section Titles */
+h2 {
+    color: #008080; /* Teal blue */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Section Content Styles */
+section{
+    background-color: #fff; /* White background for sections */
+    padding: 20px;
+    border: 1px solid #ddd; /* Light border for sections */
+    border-radius: 8px;
+    margin-bottom: 20px; /* Space between sections */
+}
+
+section p {
+    margin-bottom: 10px;
+    color: #555; /* Darker grey for paragraph text */
+}
+
+section textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    resize: vertical; /* Allow vertical resizing */
+}
+
+section button,#cart-section button {
+    background-color: #FFD700; /* Yellow */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%; /* Full width */
+}
+
+section button:hover,#cart-section button:hover {
+    background-color: #FFC300; /* Lighter yellow on hover */
+}
+
+/* Form Styles */
+form,#cart-section {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: auto;
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form input[type="file"] {
+    padding: 5px;
+}
+
+form button {
+    background-color: #FFD700; /* Yellow */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #FFC300; /* Lighter yellow on hover */
+}
+
+/* Product Styles */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.product-card h3 {
+    margin: 10px 0;
+    color: #008080; /* Teal blue */
+}
+
+.product-card p {
+    color: #555;
+}
+
+.product-card button {
+    background-color: #008080; /* Teal blue */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.product-card button:hover {
+    background-color: #006666; /* Darker teal on hover */
+}
+
+/* Hidden Sections */
+.hidden {
+    display: none;
+}
+
+/* Reviews */
+.reviews {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.reviews h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.reviews p {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+/* Payment Styles */
+.payment-details {
+    margin-top: 15px;
+}
+
+input[type="radio"] {
+    margin: 10px;
+}
+#cart-items li {
+    list-style-type: none;
+    padding: 10px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#cart-items button {
+    background-color: #FFD700; /* Yellow */
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#cart-items button:hover {
+    background-color: #FFC300; /* Lighter yellow on hover */
+}
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background: #333; /* Dark grey footer */
+    color: #ffffff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 40px;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment & Delivery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Payment & Delivery</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Delivery Address</h2>
+            <form id="delivery-form">
+                <input type="text" id="full-name" placeholder="Full Name" required><br>
+                <input type="text" id="phone-number" placeholder="Phone Number" required><br>
+                <input type="text" id="city" placeholder="City" required><br>
+                <input type="text" id="postal-code" placeholder="Postal Code"><br>
+                <button type="submit">Proceed to Payment</button>
+            </form>
+        </section>
+
+        <section id="payment-section" style="display: none;">
+            <h2>Payment Options</h2>
+            <p>Total: $<span id="payment-total"></span></p>
+            <label>
+                <input type="radio" name="payment-method" value="card" required>
+                Credit/Debit Card
+            </label><br>
+            <label>
+                <input type="radio" name="payment-method" value="paypal" required>
+                PayPal
+            </label><br>
+            <label>
+                <input type="radio" name="payment-method" value="cod" required>
+                Cash on Delivery (COD)
+            </label><br>
+
+            <div id="card-payment" class="payment-details" style="display: none;">
+                <input type="text" id="card-number" placeholder="Card Number" required><br>
+                <input type="text" id="card-expiry" placeholder="Expiry Date (MM/YY)" required><br>
+                <input type="text" id="card-cvc" placeholder="CVC" required><br>
+            </div>
+
+            <button onclick="completePayment()">Complete Payment</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Food Delivery Service</p>
+    </footer>
+
+    <script>
+        document.getElementById('delivery-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('payment-section').style.display = 'block';
+            document.getElementById('payment-total').textContent = localStorage.getItem('totalPrice');
+        });
+
+        // Show or hide card payment details based on selected payment method
+        document.querySelectorAll('input[name="payment-method"]').forEach((input) => {
+            input.addEventListener('change', function() {
+                if (this.value === 'card') {
+                    document.getElementById('card-payment').style.display = 'block';
+                } else {
+                    document.getElementById('card-payment').style.display = 'none';
+                }
+            });
+        });
+
+        function completePayment() {
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+            let valid = true;
+            
+            // Check if card details are required and valid
+            if (paymentMethod === 'card') {
+                const cardNumber = document.getElementById('card-number').value;
+                const cardExpiry = document.getElementById('card-expiry').value;
+                const cardCVC = document.getElementById('card-cvc').value;
+
+                if (!cardNumber || !cardExpiry || !cardCVC) {
+                    alert('Please fill out all card details.');
+                    valid = false;
+                }
+            }
+
+            if (valid) {
+                alert(`Payment successful using ${paymentMethod.toUpperCase()}! Your purchased product will be delivered soon.`);
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
