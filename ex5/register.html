@@ -5,24 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Classifieds App</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styling */
+body {
+    
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+    margin: 0;
+    padding: 0;
+    color: #333;
+    transition: background 0.5s ease;
+}
+
+header {
+  
+    background: linear-gradient(135deg, #9b5de5, #f15bb5);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    animation: fadeInDown 1s ease;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 1s ease;
+}
+
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    animation: slideInUp 1s ease;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #eb6bd5;
+    border-radius: 8px;
+    transition: border 0.3s, box-shadow 0.3s;
+    font-size: 1em;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #cf4444;
+    box-shadow: 0 0 8px rgba(225, 48, 199, 0.5);
+}
+
+button {
+
+    background: linear-gradient(135deg, #ff6a88, #ff9a9e);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin-top: 15px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Styling */
+footer {
+   
+    background: linear-gradient(135deg, #9b5de5, #f15bb5);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    animation: fadeInUp 1.2s ease;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+    </style>
 </head>
 <body>
     <header>
         <h1>Register</h1>
-    </header>
+    </header><br><br>
 
     <main>
-        <form id="registration-form" onsubmit="register(); return false;">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <input type="text" id="address" placeholder="Address" required>
-            <button type="submit">Register</button>
-        </form>
+        <form id="registration-form" onsubmit="register(); return false;"><br><br>
+            <input type="text" id="username" placeholder="Username" required><br><br>
+            <input type="password" id="password" placeholder="Password" required><br><br>
+            <input type="text" id="address" placeholder="Address" required><br><br>
+            <button type="submit">Register</button><br><br>
+        </form><br><br>
     </main>
 
     <footer>
-        <p>&copy; 2024 Classifieds Marketplace</p>
-    </footer>
+        <p>&copy; 2024 2024 Buy and Sell products</p><br><br>
+    </footer><br>
 
     <script src="script.js"></script>
 </body>
