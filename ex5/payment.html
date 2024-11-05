@@ -5,21 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment & Delivery</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            transition: background 0.5s ease;
+        }
+
+        header {
+            background: linear-gradient(135deg, #9b5de5, #f15bb5);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            animation: fadeInDown 1s ease;
+            background: linear-gradient(to right, #ff6a88, #ff9a9e);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        main {
+            padding: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s, transform 0.3s;
+            animation: slideInUp 1s ease;
+        }
+
+        section:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #ff6a88;
+        }
+
+        /* Form Field Styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ff9a9e;
+            border-radius: 8px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff6a88;
+            box-shadow: 0 0 8px rgba(255, 106, 136, 0.5);
+        }
+
+        /* Button Styling */
+        button {
+            background: linear-gradient(135deg, #ff6a88, #ff9a9e);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Radio Button Styling */
+        label {
+            font-size: 1.1em;
+            color: #333;
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        label:hover {
+            background: rgba(255, 154, 158, 0.2);
+        }
+
+        /* Footer Styling */
+        footer {
+            background: linear-gradient(135deg, #9b5de5, #f15bb5);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        /* Modal Background */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7); /* Black background with opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Success Animation */
+        .success-animation {
+            margin: 20px 0;
+        }
+
+        .checkmark-circle {
+            width: 70px;
+            height: 70px;
+            border: 4px solid #4caf50;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+            animation: growCircle 0.6s ease forwards;
+        }
+
+        .checkmark {
+            width: 25px;
+            height: 50px;
+            border: solid #4caf50;
+            border-width: 0 5px 5px 0;
+            position: absolute;
+            top: 12px;
+            left: 22px;
+            transform: rotate(45deg);
+            animation: checkmark 0.5s ease forwards;
+        }
+
+        @keyframes checkmark {
+            0% {
+                width: 0;
+                height: 0;
+            }
+            100% {
+                width: 25px;
+                height: 50px;
+            }
+        }
+
+        /* Animation for the circle */
+        @keyframes growCircle {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+    </style>
 </head>
 <body>
     <header>
-        <h1>Payment & Delivery</h1>
+        <h1 style="color: azure;">Payment & Delivery</h1>
     </header>
 
     <main>
         <section>
             <h2>Delivery Address</h2>
             <form id="delivery-form">
-                <input type="text" id="full-name" placeholder="Full Name" required><br>
-                <input type="text" id="phone-number" placeholder="Phone Number" required><br>
-                <input type="text" id="city" placeholder="City" required><br>
-                <input type="text" id="postal-code" placeholder="Postal Code"><br>
-                <button type="submit">Proceed to Payment</button>
+                <input type="text" id="full-name" placeholder="Full Name" required><br><br>
+                <input type="text" id="phone-number" placeholder="Phone Number" required><br><br>
+                <input type="text" id="city" placeholder="City" required><br><br>
+                <input type="text" id="postal-code" placeholder="Postal Code"><br><br>
+                <button type="submit">Proceed to Payment</button><br><br>
             </form>
         </section>
 
@@ -40,58 +247,58 @@
             </label><br>
 
             <div id="card-payment" class="payment-details" style="display: none;">
-                <input type="text" id="card-number" placeholder="Card Number" required><br>
-                <input type="text" id="card-expiry" placeholder="Expiry Date (MM/YY)" required><br>
-                <input type="text" id="card-cvc" placeholder="CVC" required><br>
+                <input type="text" id="card-number" placeholder="Card Number" required><br><br>
+                <input type="text" id="card-expiry" placeholder="Expiry Date (MM/YY)" required><br><br>
+                <input type="text" id="card-cvc" placeholder="CVC" required><br><br>
             </div>
 
-            <button onclick="completePayment()">Complete Payment</button>
+            <button onclick="completePayment()">Complete Payment</button><br><br>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Food Delivery Service</p>
+        <p>&copy; 2024 Buy and Sell products</p><br><br>
     </footer>
 
+    <!-- Modal for Payment Success -->
+    <div class="modal" id="paymentModal"><br><br>
+        <div class="modal-content">
+            <span class="close" onclick="hidePaymentSuccess()">&times;</span><br><br>
+            <h2>Payment Successful!</h2><br><br>
+            <div class="checkmark-circle"><br><br>
+                <div class="checkmark"></div><br><br>
+            </div><br><br>
+            <p>Your payment has been processed successfully. Your purchased product will be delivered soon.</p><br><br>
+            <button onclick="hidePaymentSuccess()">Close</button><br><br>
+        </div>
+    </div>
+
     <script>
-        document.getElementById('delivery-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        document.getElementById('delivery-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('payment-total').innerText = '100.00'; // Set total amount
             document.getElementById('payment-section').style.display = 'block';
-            document.getElementById('payment-total').textContent = localStorage.getItem('totalPrice');
         });
 
-        // Show or hide card payment details based on selected payment method
-        document.querySelectorAll('input[name="payment-method"]').forEach((input) => {
-            input.addEventListener('change', function() {
-                if (this.value === 'card') {
-                    document.getElementById('card-payment').style.display = 'block';
+        document.querySelectorAll('input[name="payment-method"]').forEach((elem) => {
+            elem.addEventListener("change", function(event) {
+                const cardPayment = document.getElementById('card-payment');
+                if (event.target.value === 'card') {
+                    cardPayment.style.display = 'block';
                 } else {
-                    document.getElementById('card-payment').style.display = 'none';
+                    cardPayment.style.display = 'none';
                 }
             });
         });
 
         function completePayment() {
-            const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
-            let valid = true;
-            
-            // Check if card details are required and valid
-            if (paymentMethod === 'card') {
-                const cardNumber = document.getElementById('card-number').value;
-                const cardExpiry = document.getElementById('card-expiry').value;
-                const cardCVC = document.getElementById('card-cvc').value;
+            const modal = document.getElementById('paymentModal');
+            modal.style.display = 'flex'; // Show modal
+        }
 
-                if (!cardNumber || !cardExpiry || !cardCVC) {
-                    alert('Please fill out all card details.');
-                    valid = false;
-                }
-            }
-
-            if (valid) {
-                alert(`Payment successful using ${paymentMethod.toUpperCase()}! Your purchased product will be delivered soon.`);
-                localStorage.clear();
-                window.location.href = 'index.html';
-            }
+        function hidePaymentSuccess() {
+            const modal = document.getElementById('paymentModal');
+            modal.style.display = 'none'; // Hide modal
         }
     </script>
 </body>
