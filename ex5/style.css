@@ -1,137 +1,124 @@
+/* Reset and Basic Setup */
 * {
-    box-sizing: border-box; /* Make sure padding and borders are included in element's total width and height */
-    margin: 0;             /* Reset default margin */
-    padding: 0;            /* Reset default padding */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light grey background */
-    margin: 0;
-    padding: 0;
+    background: linear-gradient(135deg, #f15bb5, #9b5de5);
+    /* Light gradient background */
     color: #333;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.5s ease;
 }
 
-main {
-    flex: 1; /* This will push the footer to the bottom */
-}
-
+/* Header */
 header {
-    background-color: #008080; /* Teal blue */
+    background: linear-gradient(135deg, #f15bb5, #9b5de5);
+    /* Gradient teal */
     color: white;
-    padding: 10px;
+    padding: 15px;
     text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
-nav {
-    margin-top: 10px;
+    font-size: 2.2em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    animation: fadeIn 1.2s ease;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin: 0 15px;
+    margin: 0 20px;
     font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s;
 }
 
 nav a:hover {
+    color: #912ed3;
+    /* Highlight color */
     text-decoration: underline;
-}
-
-main {
-    flex: 1;
-    padding: 20px;
 }
 
 /* Section Titles */
 h2 {
-    color: #008080; /* Teal blue */
+    color: #008080;
+    font-size: 1.8em;
     margin-bottom: 20px;
     text-align: center;
+    animation: slideIn 0.8s ease;
 }
 
-/* Section Content Styles */
-section{
-    background-color: #fff; /* White background for sections */
-    padding: 20px;
-    border: 1px solid #ddd; /* Light border for sections */
-    border-radius: 8px;
-    margin-bottom: 20px; /* Space between sections */
-}
-
-section p {
-    margin-bottom: 10px;
-    color: #555; /* Darker grey for paragraph text */
-}
-
-section textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    resize: vertical; /* Allow vertical resizing */
-}
-
-section button,#cart-section button {
-    background-color: #FFD700; /* Yellow */
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%; /* Full width */
-}
-
-section button:hover,#cart-section button:hover {
-    background-color: #FFC300; /* Lighter yellow on hover */
-}
-
-/* Form Styles */
-form,#cart-section {
+/* Section Content */
+section {
     background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease;
+}
+
+/* Form Styling */
+form,
+#cart-section {
+    background-color: #fff;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
     max-width: 500px;
     margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-form input, form textarea, form button {
+form input,
+form textarea,
+form button,
+#cart-section button {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    transition: border-color 0.3s;
 }
 
 form input[type="file"] {
-    padding: 5px;
+    padding: 8px;
 }
 
-form button {
-    background-color: #FFD700; /* Yellow */
+form button,
+#cart-section button {
+
+    background: linear-gradient(135deg, #f15bb5, #9b5de5);
     color: white;
+    font-weight: bold;
     border: none;
     cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-form button:hover {
-    background-color: #FFC300; /* Lighter yellow on hover */
+form button:hover,
+#cart-section button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Product Styles */
+/* Product Cards */
 .product-container {
     display: flex;
     flex-wrap: wrap;
@@ -142,50 +129,49 @@ form button:hover {
 .product-card {
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 300px;
-    padding: 15px;
+    border-radius: 12px;
+    width: 280px;
+    padding: 20px;
     text-align: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .product-card img {
     max-width: 100%;
-    border-radius: 4px;
-    margin-bottom: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
 }
 
 .product-card h3 {
     margin: 10px 0;
-    color: #008080; /* Teal blue */
-}
-
-.product-card p {
-    color: #555;
+    color: #008080;
 }
 
 .product-card button {
-    background-color: #008080; /* Teal blue */
+    background-color: #008080;
     color: white;
-    padding: 10px;
+    padding: 12px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .product-card button:hover {
-    background-color: #006666; /* Darker teal on hover */
-}
-
-/* Hidden Sections */
-.hidden {
-    display: none;
+    background-color: #006666;
+    transform: scale(1.05);
 }
 
 /* Reviews */
 .reviews {
-    margin-top: 15px;
+    margin-top: 20px;
     text-align: left;
 }
 
@@ -196,50 +182,81 @@ form button:hover {
 
 .reviews p {
     background-color: #f9f9f9;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 5px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Payment Styles */
-.payment-details {
-    margin-top: 15px;
-}
-
-input[type="radio"] {
-    margin: 10px;
-}
+/* Cart Item Styles */
 #cart-items li {
     list-style-type: none;
-    padding: 10px;
+    padding: 15px;
     background-color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
     display: flex;
     justify-content: space-between;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease;
 }
 
 #cart-items button {
-    background-color: #FFD700; /* Yellow */
+    background: linear-gradient(135deg, #f15bb5, #9b5de5);
     border: none;
     color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 8px 15px;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #cart-items button:hover {
-    background-color: #FFC300; /* Lighter yellow on hover */
+    background-color: #FFC300;
 }
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 20px 0;
-    background: #333; /* Dark grey footer */
+    padding: 25px 0;
+    background: #333;
     color: #ffffff;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    margin-top: 40px;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
