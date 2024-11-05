@@ -5,52 +5,234 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RESELLIT Marketplace</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4, #ffd1ff);
+    background-size: 300% 300%;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    animation: backgroundGradient 10s ease infinite;
+
+}
+
+/* Animated Gradient Background */
+@keyframes backgroundGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+header {
+    background: linear-gradient(135deg, #9b5de5, #f15bb5);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 1s ease;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: white;
+    animation: textGlow 1s ease infinite alternate;
+}
+
+/* Glowing Text Animation */
+@keyframes textGlow {
+    0% { text-shadow: 0 0 8px #f15bb5, 0 0 12px #9b5de5; }
+    100% { text-shadow: 0 0 16px #f15bb5, 0 0 24px #9b5de5; }
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+    transition: color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+nav a:hover {
+    color: #f15bb5;
+    text-shadow: 0 0 8px rgba(241, 91, 181, 0.8);
+}
+
+/* Animated Border Underline */
+nav a:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, #f15bb5, #ff9a9e);
+    transition: transform 0.3s;
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+nav a:hover:after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Main Content */
+main {
+    padding: 20px;
+    animation: fadeIn 1s ease;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Section Card Styling */
+#product-list-section, #sell-product-section, #cart-section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(246, 71, 153, 0.2);
+    animation: fadeInUp 1s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#product-list-section:hover, #sell-product-section:hover, #cart-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 14px rgba(255, 87, 238, 0.3);
+}
+
+/* Price Filter Styling */
+#price-filter {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    border: 2px solid #ff9a9e;
+    border-radius: 8px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+#price-filter:focus {
+    border-color: #f15bb5;
+    box-shadow: 0 0 12px rgba(241, 91, 181, 0.5);
+}
+
+/* Button Styling */
+button {
+    background: linear-gradient(135deg, #ff9a9e, #f15bb5);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #f15bb5, #9b5de5);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Ripple Effect on Button Click */
+button:active {
+    animation: rippleEffect 0.4s ease;
+}
+
+@keyframes rippleEffect {
+    0% { box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+    100% { box-shadow: 0 0 20px rgba(241, 91, 181, 0); }
+}
+
+/* Animated Cart Link */
+#cart-link.rotating {
+    animation: rotate 0.6s linear;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Footer Styling */
+footer {
+    background: linear-gradient(135deg, #9b5de5, #f15bb5);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    animation: fadeInUp 1.2s ease;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+
+    </style>
 </head>
 <body>
     <header>
-        <h1>RESELLIT   Marketplace</h1>
+        <h1>Buy and Sell Products</h1><br><br>
         <nav>
             <a href="#" onclick="showSection('product-list-section')">Home</a>
             <a href="#" onclick="showSection('sell-product-section')">Sell Product</a>
             <a href="#" onclick="showSection('cart-section')" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
-        </nav>
-    </header>
+        </nav><br><br>
+    </header><br><br>
 
-    <main>
+    <main><br><br>
         <!-- Product List Section -->
         <section id="product-list-section">
-            <h2>Available Products</h2>
-
-            <label for="price-filter">Max Price:</label>
-            <input type="number" id="price-filter" oninput="filterProducts()" placeholder="Enter max price" />
-            <p id="price-display">Max Price: $0</p>
-
-            <div id="product-list" class="product-container"></div>
-        </section>
+            <h2>Available Products</h2><br><br>
+            <label for="price-filter">Max Price:</label><br><br>
+            <input type="number" id="price-filter" oninput="filterProducts()" placeholder="Enter max price" /><br><br>
+            <p id="price-display">Max Price: $0</p><br><br>
+            <div id="product-list" class="product-container"></div><br><br>
+        </section><br><br>
 
         <!-- Sell Product Section -->
         <section id="sell-product-section" class="hidden">
-            <h2>Sell Your Product</h2>
+            <h2>Sell Your Product</h2><br><br>
             <form id="sell-product-form" onsubmit="addProduct(); return false;">
-                <input type="text" id="product-name" placeholder="Product Name" required>
-                <input type="number" id="product-price" placeholder="Price" required>
-                <textarea id="product-description" placeholder="Description" required></textarea>
-                <input type="file" id="product-image" accept="image/*" required>
-                <button type="submit">Add Product</button>
-            </form>
-        </section>
+                <input type="text" id="product-name" placeholder="Product Name" required><br><br>
+                <input type="number" id="product-price" placeholder="Price" required><br><br>
+                <textarea id="product-description" placeholder="Description" required></textarea><br><br>
+                <input type="file" id="product-image" accept="image/*" required><br><br>
+                <button type="submit">Add Product</button><br><br>
+            </form><br><br>
+        </section><br><br>
 
         <!-- Cart Section -->
         <section id="cart-section" class="hidden">
-            <h2>Cart</h2>
-            <ul id="cart-items"></ul>
-            <p>Total: $<span id="total-price">0</span></p>
-            <button onclick="proceedToPayment()">Proceed to Payment</button>
-        </section>
-    </main>
+            <h2>Cart</h2><br><br>
+            <ul id="cart-items"></ul><br><br>
+            <p>Total: $<span id="total-price">0</span></p><br><br>
+            <button onclick="proceedToPayment()">Proceed to Payment</button><br><br>
+        </section><br><br>
+    </main><br><br>
 
     <footer>
-        <p>&copy; 2024 Classified Marketplace</p>
+        <p>&copy; 2024 2024 Buy and Sell products</p><br><br>
     </footer>
 
     <script src="script.js"></script>
