@@ -237,7 +237,10 @@
                 <input type="radio" name="payment-method" value="card" required>
                 Credit/Debit Card
             </label><br>
-          
+            <label>
+                <input type="radio" name="payment-method" value="paypal" required>
+                PayPal
+            </label><br>
             <label>
                 <input type="radio" name="payment-method" value="cod" required>
                 Cash on Delivery (COD)
@@ -250,7 +253,10 @@
                 <input type="text" id="card-cvc" placeholder="CVC" required><br><br>
             </div>
 
-           
+            <!-- PayPal Payment Section -->
+            <div id="paypal-payment" class="payment-details" style="display: none;">
+                <input type="email" id="paypal-email" placeholder="PayPal UPI ID" required><br><br>
+            </div>
 
             <button onclick="completePayment()">Complete Payment</button><br><br>
         </section>
