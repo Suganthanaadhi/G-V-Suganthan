@@ -246,10 +246,16 @@
                 Cash on Delivery (COD)
             </label><br>
 
+            <!-- Card Payment Section -->
             <div id="card-payment" class="payment-details" style="display: none;">
                 <input type="text" id="card-number" placeholder="Card Number" required><br><br>
                 <input type="text" id="card-expiry" placeholder="Expiry Date (MM/YY)" required><br><br>
                 <input type="text" id="card-cvc" placeholder="CVC" required><br><br>
+            </div>
+
+            <!-- PayPal Payment Section -->
+            <div id="paypal-payment" class="payment-details" style="display: none;">
+                <input type="email" id="paypal-email" placeholder="PayPal UPI ID" required><br><br>
             </div>
 
             <button onclick="completePayment()">Complete Payment</button><br><br>
@@ -280,13 +286,21 @@
             document.getElementById('payment-section').style.display = 'block';
         });
 
+        // Show relevant payment details based on selected payment method
         document.querySelectorAll('input[name="payment-method"]').forEach((elem) => {
             elem.addEventListener("change", function(event) {
                 const cardPayment = document.getElementById('card-payment');
+                const paypalPayment = document.getElementById('paypal-payment');
+                
+                // Hide both sections initially
+                cardPayment.style.display = 'none';
+                paypalPayment.style.display = 'none';
+                
+                // Show the selected payment method section
                 if (event.target.value === 'card') {
                     cardPayment.style.display = 'block';
-                } else {
-                    cardPayment.style.display = 'none';
+                } else if (event.target.value === 'paypal') {
+                    paypalPayment.style.display = 'block';
                 }
             });
         });
