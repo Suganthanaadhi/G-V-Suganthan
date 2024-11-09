@@ -141,11 +141,11 @@ function toggleSellProductForm() {
 function filterProducts() {
     const maxPrice = parseFloat(document.getElementById('price-filter').value);
     document.getElementById('price-display').textContent = `$${maxPrice}`;
-
+    
     const filteredProducts = products.filter(product => product.price <= maxPrice);
     const productList = document.getElementById('product-list');
     productList.innerHTML = '';
-
+    
     if (filteredProducts.length === 0) {
         productList.innerHTML = '<p>No products found in this price range.</p>';
     } else {
@@ -221,7 +221,7 @@ function addProduct() {
     const productImage = document.getElementById('product-image').files[0];
 
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = function(e) {
         const newProduct = {
             name: productName,
             price: parseFloat(productPrice),
@@ -281,24 +281,7 @@ function showSection(sectionId) {
     });
     document.getElementById(sectionId).classList.remove('hidden');
 }
-function addProduct() {
-    // Product addition logic goes here (already implemented).
 
-    // Trigger a rotation animation on the cart link.
-    const cartLink = document.getElementById("cart-link");
-    cartLink.classList.add("rotating");
-
-    // Remove rotation class after animation ends.
-    setTimeout(() => {
-        cartLink.classList.remove("rotating");
-    }, 600); // Duration should match the CSS rotation animation time.
-}
-
-function filterProducts() {
-    const priceFilter = document.getElementById("price-filter").value;
-    document.getElementById("price-display").innerText = `Max Price: $${priceFilter}`;
-    // Filter logic would be implemented here.
-}
 
 
 // Initialize product display
