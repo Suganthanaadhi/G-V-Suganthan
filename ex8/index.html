@@ -4,249 +4,315 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Online Survey</title>
+  <title>Advanced Survey Application</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to right, #74ebd5, #9face6);
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
     .container {
-      background: #fff;
+      background-color: white;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 400px;
       text-align: center;
-      animation: fadeIn 0.8s ease-in-out;
     }
 
     h1 {
-      color: #333;
-      margin-bottom: 20px;
+      margin: 0 0 20px;
     }
 
-    #progress-container {
-      margin-bottom: 20px;
-      font-size: 16px;
-      color: #555;
-    }
-
-    .btn {
-      padding: 10px 15px;
+    button {
+      padding: 10px;
       border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-      margin: 10px 5px;
-    }
-
-    .btn:hover {
-      opacity: 0.8;
-    }
-
-    #submit-btn,
-    #final-submit-btn {
-      background-color: #28a745;
-    }
-
-    #edit-btn {
-      background-color: #ffc107;
-    }
-
-    #prev-btn,
-    #next-btn {
       background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
     }
 
-    .hidden {
-      display: none;
+    button:hover {
+      background-color: #0056b3;
     }
 
-    textarea {
-      width: 100%;
-      height: 80px;
-      margin: 10px 0;
+    input[type="text"],
+    input[type="password"] {
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      margin-bottom: 10px;
+      width: calc(100% - 24px);
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
+    .auth-container,
+    .survey-container,
+    .review-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    #progress-container {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    #progress-bar {
+      width: 0;
+      height: 10px;
+      background-color: #007bff;
+      border-radius: 5px;
+      transition: width 0.3s;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .review-container .question {
+      text-align: left;
+    }
+
+    #timer {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Advanced Online Survey</h1>
-    <div id="progress-container">
-      <p>Progress: <span id="progress">0</span>/5</p>
+    <div id="auth-container" class="auth-container">
+      <h1>Survey Login</h1>
+      <div id="auth-form">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button id="login-btn">Login</button>
+        <button id="register-btn">Register</button>
+      </div>
     </div>
-    <div id="survey-container"></div>
-    <div id="controls">
-      <button id="prev-btn" class="btn" disabled>Previous</button>
-      <button id="next-btn" class="btn">Next</button>
+
+    <div id="survey-container" class="survey-container" style="display:none;">
+      <h1>Online Survey</h1>
+      <div id="timer">Time Left: <span id="time-left">30</span> seconds</div>
+      <div id="progress-container">
+        <span id="progress-text">Question 1 of 5</span>
+        <div id="progress-bar"></div>
+      </div>
+      <div id="questions-container"></div>
+      <button id="next-question-btn">Next</button>
+      <button id="submit-survey-btn" style="display:none;">Submit</button>
     </div>
-    <button id="submit-btn" class="btn hidden">Submit</button>
-    <div id="result-container" class="hidden">
-      <h2>Survey Summary</h2>
-      <div id="summary-container"></div>
-      <button id="edit-btn" class="btn">Edit</button>
-      <button id="final-submit-btn" class="btn">Final Submit</button>
+
+    <div id="review-container" class="review-container" style="display:none;">
+      <h1>Review Your Answers</h1>
+      <div id="review-questions-container"></div>
+      <button id="edit-answers-btn">Edit Answers</button>
+      <button id="final-submit-btn">Final Submit</button>
     </div>
   </div>
-
   <script>
-    // Advanced Online Survey Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const authContainer = document.getElementById('auth-container');
+      const surveyContainer = document.getElementById('survey-container');
+      const reviewContainer = document.getElementById('review-container');
+      const loginBtn = document.getElementById('login-btn');
+      const registerBtn = document.getElementById('register-btn');
+      const nextQuestionBtn = document.getElementById('next-question-btn');
+      const submitSurveyBtn = document.getElementById('submit-survey-btn');
+      const editAnswersBtn = document.getElementById('edit-answers-btn');
+      const finalSubmitBtn = document.getElementById('final-submit-btn');
+      const progressText = document.getElementById('progress-text');
+      const progressBar = document.getElementById('progress-bar');
+      const questionsContainer = document.getElementById('questions-container');
+      const reviewQuestionsContainer = document.getElementById('review-questions-container');
+      const timer = document.getElementById('time-left');
 
-    // User authentication logic (simplified for demo)
-    let currentUser = localStorage.getItem('user');
-    if (!currentUser) {
-      currentUser = prompt("Enter your name to start the survey:");
-      localStorage.setItem('user', currentUser);
-    }
+      const questions = [
+        "What is your favorite color?",
+        "What is your favorite food?",
+        "What is your dream job?",
+        "Where do you see yourself in 5 years?",
+        "What is your hobby?",
+        "What is your favorite movie?",
+        "What is your favorite book?",
+        "What motivates you?",
+        "What is your biggest achievement?",
+        "What is your favorite season?"
+      ];
 
-    alert(`Welcome back, ${currentUser}!`);
+      let currentQuestionIndex = 0;
+      let selectedQuestions = [];
+      let userAnswers = {};
+      let countdownInterval;
 
-    // Question Pool (Including different question types)
-    const questions = [
-      { question: "What is your favorite color?", type: "text" },
-      { question: "What inspires you the most?", type: "textarea" },
-      { question: "Rate your satisfaction with our service (1-10)", type: "number" },
-      { question: "Select your preferred vacation destination", type: "checkbox", options: ["Beach", "Mountain", "City"] },
-      { question: "What is your dream job?", type: "text" },
-    ];
+      loginBtn.addEventListener('click', () => {
+        handleAuth('login');
+      });
 
-    let currentQuestionIndex = 0;
-    let selectedQuestions = [];
-    let responses = [];
+      registerBtn.addEventListener('click', () => {
+        handleAuth('register');
+      });
 
-    // Randomize and pick 5 questions
-    function initializeSurvey() {
-      selectedQuestions = questions.sort(() => 0.5 - Math.random()).slice(0, 5);
-      responses = Array(5).fill(null);
-      localStorage.setItem("selectedQuestions", JSON.stringify(selectedQuestions));
-      displayQuestion(currentQuestionIndex);
-    }
+      nextQuestionBtn.addEventListener('click', () => {
+        handleNextQuestion();
+      });
 
-    // Display the current question based on its type
-    function displayQuestion(index) {
-      const surveyContainer = document.getElementById("survey-container");
-      const question = selectedQuestions[index];
+      submitSurveyBtn.addEventListener('click', () => {
+        handleReview();
+      });
 
-      let inputField = '';
-      if (question.type === 'text') {
-        inputField = `<input type="text" id="answer" placeholder="Your answer here..." value="${responses[index] || ''}">`;
-      } else if (question.type === 'textarea') {
-        inputField = `<textarea id="answer" placeholder="Your answer here...">${responses[index] || ''}</textarea>`;
-      } else if (question.type === 'number') {
-        inputField = `<input type="number" id="answer" placeholder="1-10" min="1" max="10" value="${responses[index] || ''}">`;
-      } else if (question.type === 'checkbox') {
-        inputField = question.options.map(option => `
-          <label><input type="checkbox" class="answer-checkbox" value="${option}" ${responses[index]?.includes(option) ? 'checked' : ''}> ${option}</label><br>
-        `).join('');
-      }
+      editAnswersBtn.addEventListener('click', () => {
+        handleEditAnswers();
+      });
 
-      surveyContainer.innerHTML = `
-        <p><strong>Question ${index + 1}:</strong> ${question.question}</p>
-        ${inputField}
-      `;
-      updateProgress();
-      toggleButtons();
-    }
+      finalSubmitBtn.addEventListener('click', () => {
+        handleSubmitSurvey();
+      });
 
-    // Update progress
-    function updateProgress() {
-      document.getElementById("progress").innerText = currentQuestionIndex + 1;
-    }
+      function handleAuth(action) {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const users = JSON.parse(localStorage.getItem('users')) || {};
 
-    // Enable/Disable buttons based on position
-    function toggleButtons() {
-      document.getElementById("prev-btn").disabled = currentQuestionIndex === 0;
-      document.getElementById("next-btn").disabled = currentQuestionIndex === selectedQuestions.length - 1;
-      document.getElementById("submit-btn").classList.toggle("hidden", currentQuestionIndex !== selectedQuestions.length - 1);
-    }
-
-    // Save the current response based on question type
-    function saveResponse() {
-      const answerElement = document.getElementById("answer");
-
-      if (selectedQuestions[currentQuestionIndex].type === 'checkbox') {
-        responses[currentQuestionIndex] = Array.from(document.querySelectorAll('.answer-checkbox:checked')).map(cb => cb.value);
-      } else {
-        responses[currentQuestionIndex] = answerElement.value.trim();
-      }
-    }
-
-    // Show summary before final submission
-    function showSummary() {
-      const summaryContainer = document.getElementById("summary-container");
-      summaryContainer.innerHTML = selectedQuestions
-        .map((q, i) => {
-          let responseText = responses[i] || "No answer provided";
-          if (Array.isArray(responses[i])) {
-            responseText = responses[i].join(", ");
+        if (action === 'login') {
+          if (users[username] && users[username] === password) {
+            localStorage.setItem('currentUser', username);
+            startSurvey();
+          } else {
+            alert('Invalid username or password!');
           }
-          return `<p><strong>${q.question}</strong><br>Answer: ${responseText}</p>`;
-        })
-        .join("");
-      document.getElementById("result-container").classList.remove("hidden");
-      document.getElementById("controls").classList.add("hidden");
-      document.getElementById("survey-container").classList.add("hidden");
-    }
+        } else if (action === 'register') {
+          if (username && password) {
+            if (users[username]) {
+              alert('Username already exists!');
+            } else {
+              users[username] = password;
+              localStorage.setItem('users', JSON.stringify(users));
+              alert('Registration successful! Please log in.');
+            }
+          } else {
+            alert('Please fill in both fields.');
+          }
+        }
+      }
 
-    // Finalize survey
-    function finalizeSurvey() {
-      localStorage.setItem("responses", JSON.stringify(responses));
-      alert("Thank you! Your responses have been submitted.");
-      location.reload();
-    }
+      function startSurvey() {
+        authContainer.style.display = 'none';
+        surveyContainer.style.display = 'flex';
+        selectedQuestions = getRandomQuestions(5);
+        displayQuestion();
+        updateProgress();
+        startTimer();
+      }
 
-    // Event listeners
-    document.getElementById("prev-btn").addEventListener("click", () => {
-      saveResponse();
-      currentQuestionIndex--;
-      displayQuestion(currentQuestionIndex);
+      function getRandomQuestions(num) {
+        const shuffled = questions.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, num);
+      }
+
+      function displayQuestion() {
+        clearInterval(countdownInterval);
+        startTimer();
+
+        const question = selectedQuestions[currentQuestionIndex];
+        questionsContainer.innerHTML = `
+          <div class="question fade-in">
+              <label for="answer">${question}</label>
+              <input type="text" id="answer" value="${userAnswers[currentQuestionIndex] || ''}" required>
+          </div>
+        `;
+      }
+
+      function handleNextQuestion() {
+        const answer = document.getElementById('answer').value.trim();
+        if (answer) {
+          userAnswers[currentQuestionIndex] = answer;
+          if (currentQuestionIndex < selectedQuestions.length - 1) {
+            currentQuestionIndex++;
+            displayQuestion();
+            updateProgress();
+            if (currentQuestionIndex === selectedQuestions.length - 1) {
+              nextQuestionBtn.style.display = 'none';
+              submitSurveyBtn.style.display = 'block';
+            }
+          }
+        } else {
+          alert('Please provide an answer.');
+        }
+      }
+
+      function updateProgress() {
+        const progress = ((currentQuestionIndex + 1) / selectedQuestions.length) * 100;
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `Question ${currentQuestionIndex + 1} of ${selectedQuestions.length}`;
+      }
+
+      function startTimer() {
+        let timeLeft = 30;
+        timer.textContent = timeLeft;
+
+        countdownInterval = setInterval(() => {
+          timeLeft--;
+          timer.textContent = timeLeft;
+
+          if (timeLeft === 0) {
+            clearInterval(countdownInterval);
+            alert('Time up! Moving to next question.');
+            handleNextQuestion();
+          }
+        }, 1000);
+      }
+
+      function handleReview() {
+        surveyContainer.style.display = 'none';
+        reviewContainer.style.display = 'flex';
+
+        reviewQuestionsContainer.innerHTML = selectedQuestions
+          .map((question, index) => {
+            return `
+              <div class="question">
+                <h3>Q: ${question}</h3>
+                <p><strong>Answer:</strong> ${userAnswers[index] || 'No answer provided'}</p>
+              </div>
+            `;
+          })
+          .join('');
+      }
+
+      function handleEditAnswers() {
+        reviewContainer.style.display = 'none';
+        surveyContainer.style.display = 'flex';
+
+        currentQuestionIndex = 0;
+        displayQuestion();
+        updateProgress();
+        submitSurveyBtn.style.display = 'none';
+        nextQuestionBtn.style.display = 'block';
+      }
+
+      function handleSubmitSurvey() {
+        alert('Survey submitted successfully!');
+        console.log(userAnswers);
+
+        // Reset application for demonstration purposes
+        localStorage.removeItem('currentUser');
+        location.reload();
+      }
     });
-
-    document.getElementById("next-btn").addEventListener("click", () => {
-      saveResponse();
-      currentQuestionIndex++;
-      displayQuestion(currentQuestionIndex);
-    });
-
-    document.getElementById("submit-btn").addEventListener("click", () => {
-      saveResponse();
-      showSummary();
-    });
-
-    document.getElementById("edit-btn").addEventListener("click", () => {
-      document.getElementById("result-container").classList.add("hidden");
-      document.getElementById("controls").classList.remove("hidden");
-      document.getElementById("survey-container").classList.remove("hidden");
-    });
-
-    document.getElementById("final-submit-btn").addEventListener("click", finalizeSurvey);
-
-    // Initialize survey
-    document.addEventListener("DOMContentLoaded", initializeSurvey);
   </script>
 </body>
 
 </html>
+
