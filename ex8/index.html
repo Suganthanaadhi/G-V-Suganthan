@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Online Survey</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #progress-container {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    #submit-btn,
+    #final-submit-btn {
+      background-color: #28a745;
+    }
+
+    #edit-btn {
+      background-color: #ffc107;
+    }
+
+    #prev-btn,
+    #next-btn {
+      background-color: #007bff;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Advanced Online Survey</h1>
+    <div id="progress-container">
+      <p>Progress: <span id="progress">0</span>/5</p>
+    </div>
+    <div id="survey-container"></div>
+    <div id="controls">
+      <button id="prev-btn" class="btn" disabled>Previous</button>
+      <button id="next-btn" class="btn">Next</button>
+    </div>
+    <button id="submit-btn" class="btn hidden">Submit</button>
+    <div id="result-container" class="hidden">
+      <h2>Survey Summary</h2>
+      <div id="summary-container"></div>
+      <button id="edit-btn" class="btn">Edit</button>
+      <button id="final-submit-btn" class="btn">Final Submit</button>
+    </div>
+  </div>
+
+  <script>
+    // Advanced Online Survey Logic
+
+    // User authentication logic (simplified for demo)
+    let currentUser = localStorage.getItem('user');
+    if (!currentUser) {
+      currentUser = prompt("Enter your name to start the survey:");
+      localStorage.setItem('user', currentUser);
+    }
+
+    alert(`Welcome back, ${currentUser}!`);
+
+    // Question Pool (Including different question types)
+    const questions = [
+      { question: "What is your favorite color?", type: "text" },
+      { question: "What inspires you the most?", type: "textarea" },
+      { question: "Rate your satisfaction with our service (1-10)", type: "number" },
+      { question: "Select your preferred vacation destination", type: "checkbox", options: ["Beach", "Mountain", "City"] },
+      { question: "What is your dream job?", type: "text" },
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedQuestions = [];
+    let responses = [];
+
+    // Randomize and pick 5 questions
+    function initializeSurvey() {
+      selectedQuestions = questions.sort(() => 0.5 - Math.random()).slice(0, 5);
+      responses = Array(5).fill(null);
+      localStorage.setItem("selectedQuestions", JSON.stringify(selectedQuestions));
+      displayQuestion(currentQuestionIndex);
+    }
+
+    // Display the current question based on its type
+    function displayQuestion(index) {
+      const surveyContainer = document.getElementById("survey-container");
+      const question = selectedQuestions[index];
+
+      let inputField = '';
+      if (question.type === 'text') {
+        inputField = `<input type="text" id="answer" placeholder="Your answer here..." value="${responses[index] || ''}">`;
+      } else if (question.type === 'textarea') {
+        inputField = `<textarea id="answer" placeholder="Your answer here...">${responses[index] || ''}</textarea>`;
+      } else if (question.type === 'number') {
+        inputField = `<input type="number" id="answer" placeholder="1-10" min="1" max="10" value="${responses[index] || ''}">`;
+      } else if (question.type === 'checkbox') {
+        inputField = question.options.map(option => `
+          <label><input type="checkbox" class="answer-checkbox" value="${option}" ${responses[index]?.includes(option) ? 'checked' : ''}> ${option}</label><br>
+        `).join('');
+      }
+
+      surveyContainer.innerHTML = `
+        <p><strong>Question ${index + 1}:</strong> ${question.question}</p>
+        ${inputField}
+      `;
+      updateProgress();
+      toggleButtons();
+    }
+
+    // Update progress
+    function updateProgress() {
+      document.getElementById("progress").innerText = currentQuestionIndex + 1;
+    }
+
+    // Enable/Disable buttons based on position
+    function toggleButtons() {
+      document.getElementById("prev-btn").disabled = currentQuestionIndex === 0;
+      document.getElementById("next-btn").disabled = currentQuestionIndex === selectedQuestions.length - 1;
+      document.getElementById("submit-btn").classList.toggle("hidden", currentQuestionIndex !== selectedQuestions.length - 1);
+    }
+
+    // Save the current response based on question type
+    function saveResponse() {
+      const answerElement = document.getElementById("answer");
+
+      if (selectedQuestions[currentQuestionIndex].type === 'checkbox') {
+        responses[currentQuestionIndex] = Array.from(document.querySelectorAll('.answer-checkbox:checked')).map(cb => cb.value);
+      } else {
+        responses[currentQuestionIndex] = answerElement.value.trim();
+      }
+    }
+
+    // Show summary before final submission
+    function showSummary() {
+      const summaryContainer = document.getElementById("summary-container");
+      summaryContainer.innerHTML = selectedQuestions
+        .map((q, i) => {
+          let responseText = responses[i] || "No answer provided";
+          if (Array.isArray(responses[i])) {
+            responseText = responses[i].join(", ");
+          }
+          return `<p><strong>${q.question}</strong><br>Answer: ${responseText}</p>`;
+        })
+        .join("");
+      document.getElementById("result-container").classList.remove("hidden");
+      document.getElementById("controls").classList.add("hidden");
+      document.getElementById("survey-container").classList.add("hidden");
+    }
+
+    // Finalize survey
+    function finalizeSurvey() {
+      localStorage.setItem("responses", JSON.stringify(responses));
+      alert("Thank you! Your responses have been submitted.");
+      location.reload();
+    }
+
+    // Event listeners
+    document.getElementById("prev-btn").addEventListener("click", () => {
+      saveResponse();
+      currentQuestionIndex--;
+      displayQuestion(currentQuestionIndex);
+    });
+
+    document.getElementById("next-btn").addEventListener("click", () => {
+      saveResponse();
+      currentQuestionIndex++;
+      displayQuestion(currentQuestionIndex);
+    });
+
+    document.getElementById("submit-btn").addEventListener("click", () => {
+      saveResponse();
+      showSummary();
+    });
+
+    document.getElementById("edit-btn").addEventListener("click", () => {
+      document.getElementById("result-container").classList.add("hidden");
+      document.getElementById("controls").classList.remove("hidden");
+      document.getElementById("survey-container").classList.remove("hidden");
+    });
+
+    document.getElementById("final-submit-btn").addEventListener("click", finalizeSurvey);
+
+    // Initialize survey
+    document.addEventListener("DOMContentLoaded", initializeSurvey);
+  </script>
+</body>
+
+</html>
