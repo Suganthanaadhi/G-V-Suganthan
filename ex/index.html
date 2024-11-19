@@ -14,37 +14,46 @@
 
     /* Base styles */
     body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background: linear-gradient(45deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
-            background-size: 400% 400%;
-            animation: gradientBackground 15s ease infinite;
-            position: relative;
-        }
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(45deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
+      background-size: 400% 400%;
+      animation: gradientBackground 15s ease infinite;
+      position: relative;
+    }
 
-        /* Keyframes for the animated gradient effect */
-        @keyframes gradientBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    /* Keyframes for the animated gradient effect */
+    @keyframes gradientBackground {
+      0% {
+        background-position: 0% 50%;
+      }
 
-        /* Background image that stays fixed */
-        body::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 140%;
-            background-image: url('https://myways-public-data-prod.s3.ap-south-1.amazonaws.com/myways-resource-library/blogs/roadmap-to-become-a-full-stack-developer_Image_blogs.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            z-index: -1;
-            opacity: 0.5; /* Making the image slightly transparent */
-        }
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Background image that stays fixed */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 140%;
+      background-image: url('https://myways-public-data-prod.s3.ap-south-1.amazonaws.com/myways-resource-library/blogs/roadmap-to-become-a-full-stack-developer_Image_blogs.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: -1;
+      opacity: 0.5;
+      /* Making the image slightly transparent */
+    }
 
     /* Header styling with a smooth and modern gradient background */
     .header {
@@ -72,7 +81,7 @@
       font-weight: 700;
       animation: slideInText 1.5s ease-in-out;
       text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      
+
       /* Subtle shadow for better contrast */
     }
 
@@ -224,174 +233,179 @@
       color: #ff6f61;
     }
 
+    /* Outer container to hold both side container and content */
+    .outer-wrapper {
+      display: flex;
+      justify-content: flex-start;
+      /* Align the containers */
+      height: 100vh;
+    }
 
+    /* Side container that will hold the cards */
+    .side-container {
+      width: 300px;
+      /* Adjust width for the side container */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: #f5f5f5;
+      /* You can change this to your preferred background */
+      box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    }
 
-/* Outer container to hold both side container and content */
-.outer-wrapper {
-  display: flex;
-  justify-content: flex-start; /* Align the containers */
-  height: 100vh;
-}
+    .wrapper {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      padding: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      /* Prevents content from sticking to edges */
+      box-sizing: border-box;
+      /* Ensures padding is included in width/height */
+    }
 
-/* Side container that will hold the cards */
-.side-container {
-  width: 300px; /* Adjust width for the side container */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  overflow-y: auto;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #f5f5f5; /* You can change this to your preferred background */
-  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-}
+    .container {
+      height: 500px;
+      display: flex;
 
-.wrapper {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  padding: 10px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px; /* Prevents content from sticking to edges */
-  box-sizing: border-box; /* Ensures padding is included in width/height */
-}
+      flex-wrap: nowrap;
+      justify-content: center;
+      /* Centering the cards */
+      gap: 10px;
+      /* Space between cards */
+    }
 
-.container {
-  height: 400px;
-  display: flex;
-  
-  flex-wrap: nowrap;
-  justify-content: center; /* Centering the cards */
-  gap: 10px; /* Space between cards */
-}
+    .card {
+      width: 170px;
+      height: 480px;
+      border-radius: 2rem;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      overflow: hidden;
+      margin: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: width 0.6s cubic-bezier(.28, -0.03, 0, .99);
+      box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.8);
+    }
 
-.card {
-  width: 100px;
-  height: 300px;
-  border-radius: 2rem;
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
-  overflow: hidden;
-  margin: 0 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: width 0.6s cubic-bezier(.28, -0.03, 0, .99);
-  box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.8);
-}
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
 
-.card-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+    .card .icon {
+      font-size: 2rem;
+      font-weight: bold;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
 
-.card .icon {
-  font-size: 2rem;
-  font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-radius: 50%;
-  margin-bottom: 15px;
-}
+    .card h4 {
+      font-size: 1.2rem;
+      margin: 5px 0;
+      text-align: center;
+    }
 
-.card h4 {
-  font-size: 1.2rem;
-  margin: 5px 0;
-  text-align: center;
-}
+    .card p {
+      font-size: 0.9rem;
+      color: #d1d1d1;
+      text-align: center;
+      padding: 0 10px;
+    }
 
-.card p {
-  font-size: 0.9rem;
-  color: #d1d1d1;
-  text-align: center;
-  padding: 0 10px;
-}
+    .card .link-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 20px;
+      position: absolute;
+      bottom: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
 
-.card .link-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-  text-align: center;
-  border-radius: 20px;
-  position: absolute;
-  bottom: 20px;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
+    .card:hover .link-button,
+    input:checked+label .link-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.card:hover .link-button,
-input:checked+label .link-button {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .card:hover .card-content,
+    input:checked+label .card-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.card:hover .card-content,
-input:checked+label .card-content {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* Background images for cards */
+    .card[for="c1"] {
+      background-image: url('./img1.jpeg');
+    }
 
-/* Background images for cards */
-.card[for="c1"] {
-  background-image: url('./img1.jpeg');
-}
+    .card[for="c2"] {
+      background-image: url('./img2.jpeg');
+    }
 
-.card[for="c2"] {
-  background-image: url('./img2.jpeg');
-}
+    .card[for="c3"] {
+      background-image: url('./img3.jpeg');
+    }
 
-.card[for="c3"] {
-  background-image: url('./img3.jpeg');
-}
+    .card[for="c4"] {
+      background-image: url('./img4.jpeg');
+    }
 
-.card[for="c4"] {
-  background-image: url('./img4.jpeg');
-}
+    .card[for="c5"] {
+      background-image: url('./img5.jpeg');
+    }
 
-.card[for="c5"] {
-  background-image: url('./img5.jpeg');
-}
+    .card[for="c6"] {
+      background-image: url('./img6.jpeg');
+    }
 
-.card[for="c6"] {
-  background-image: url('./img6.jpeg');
-}
+    .card[for="c7"] {
+      background-image: url('./img7.jpeg');
+    }
 
-.card[for="c7"] {
-  background-image: url('./img7.jpeg');
-}
+    .card[for="c8"] {
+      background-image: url('./img8.jpeg');
+    }
 
-.card[for="c8"] {
-  background-image: url('./img8.jpeg');
-}
+    /* Input and Label styling for card expansion */
+    input {
+      display: none;
+      /* Hides the input element */
+    }
 
-/* Input and Label styling for card expansion */
-input {
-  display: none; /* Hides the input element */
-}
-
-input:checked+label {
-  width: 400px; /* Expands the card on click */
-  transition: width 0.3s ease;
-}
-
-
+    input:checked+label {
+      width: 400px;
+      /* Expands the card on click */
+      transition: width 0.3s ease;
+    }
   </style>
   <title>Animated Flex Cards with Links</title>
 </head>
@@ -470,6 +484,7 @@ input:checked+label {
           <h4>Project 6</h4>
           <p>Description of Project 6</p>
         </div>
+
         <a href="https://suganthanaadhi.github.io/G-V-Suganthan/ex6/app.js" class="link-button" target="_blank">View
           Project</a>
       </label>
