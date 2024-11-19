@@ -2,139 +2,263 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f4f4f4;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        #app {
-            width: 300px;
-            text-align: center;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      text-align: center;
+    }
 
-        input,
-        button {
-            margin: 10px 0;
-            padding: 10px;
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+    h1 {
+      margin: 0 0 20px;
+    }
 
-        button {
-            background: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-        button:hover {
-            background: #555;
-        }
+    input[type="text"],
+    input[type="password"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-        li {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-    </style>
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+      transition: background-color 0.3s;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      background-color: #d4edda;
+    }
+
+    li button {
+      background-color: transparent;
+      color: #dc3545;
+      border: none;
+      cursor: pointer;
+    }
+
+    #clear-all,
+    #logout-btn {
+      margin-top: 20px;
+      background-color: #dc3545;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div id="app">
-        <div id="login">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <input type="text" id="username" placeholder="Username" required>
-                <button type="submit">Login</button>
-            </form>
+  <div class="container">
+    <div id="login-form" class="form-container">
+      <h1>Login</h1>
+      <form>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <div class="button-group">
+          <button type="button" id="login-btn">Login</button>
+          <button type="button" id="register-btn">Register</button>
         </div>
-
-        <div id="todo" style="display: none;">
-            <h2>To-Do List</h2>
-            <input type="text" id="newTask" placeholder="New Task">
-            <button id="addTask">Add Task</button>
-            <ul id="taskList"></ul>
-            <button id="logout">Logout</button>
-        </div>
+      </form>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('loginForm');
-            const todoSection = document.getElementById('todo');
-            const loginSection = document.getElementById('login');
-            const addTaskButton = document.getElementById('addTask');
-            const taskList = document.getElementById('taskList');
-            const logoutButton = document.getElementById('logout');
-            const usernameInput = document.getElementById('username');
-            const newTaskInput = document.getElementById('newTask');
+    <div id="todo-app" class="form-container" style="display:none;">
+      <h1>To-Do List</h1>
+      <button id="logout-btn">Logout</button>
+      <form id="todo-form">
+        <input type="text" id="todo-input" placeholder="Add a new task" required>
+        <button type="submit">Add</button>
+      </form>
+      <ul id="todo-list"></ul>
+      <button id="clear-all">Clear All</button>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('login-form');
+      const todoApp = document.getElementById('todo-app');
+      const loginBtn = document.getElementById('login-btn');
+      const registerBtn = document.getElementById('register-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      const todoForm = document.getElementById('todo-form');
+      const todoInput = document.getElementById('todo-input');
+      const todoList = document.getElementById('todo-list');
+      const clearAllButton = document.getElementById('clear-all');
 
-            let username = '';
+      const users = JSON.parse(localStorage.getItem('users')) || {};
 
-     
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                username = usernameInput.value;
-                if (username) {
-                    loginSection.style.display = 'none';
-                    todoSection.style.display = 'block';
-                    loadTasks();
-                }
-            });
-
-       
-            addTaskButton.addEventListener('click', () => {
-                const task = newTaskInput.value;
-                if (task) {
-                    addTask(task);
-                    newTaskInput.value = '';
-                }
-            });
-
-           
-            logoutButton.addEventListener('click', () => {
-                loginSection.style.display = 'block';
-                todoSection.style.display = 'none';
-            });
-
-        
-            function loadTasks() {
-                const tasks = JSON.parse(localStorage.getItem(username) || '[]');
-                taskList.innerHTML = '';
-                tasks.forEach(task => {
-                    const li = document.createElement('li');
-                    li.textContent = task;
-                    taskList.appendChild(li);
-                });
-            }
-
-            
-            function addTask(task) {
-                const tasks = JSON.parse(localStorage.getItem(username) || '[]');
-                tasks.push(task);
-                localStorage.setItem(username, JSON.stringify(tasks));
-                loadTasks();
-            }
+      function displayTodos() {
+        const currentUser = localStorage.getItem('currentUser');
+        const todos = JSON.parse(localStorage.getItem(`todos_${currentUser}`)) || [];
+        todoList.innerHTML = '';
+        todos.forEach(todo => {
+          const li = document.createElement('li');
+          li.className = todo.completed ? 'completed fade-in' : 'fade-in';
+          li.innerHTML = `<span>${todo.task}</span><button>&times;</button>`;
+          todoList.appendChild(li);
         });
-    </script>
+      }
+
+      function showTodoApp() {
+        loginForm.style.display = 'none';
+        todoApp.style.display = 'block';
+        displayTodos();
+      }
+
+      function showLoginForm() {
+        loginForm.style.display = 'block';
+        todoApp.style.display = 'none';
+      }
+
+      loginBtn.addEventListener('click', () => {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        if (users[username] && users[username] === password) {
+          localStorage.setItem('currentUser', username);
+          showTodoApp();
+        } else {
+          alert('Invalid username or password!');
+        }
+      });
+
+      registerBtn.addEventListener('click', () => {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        if (username && password) {
+          if (users[username]) {
+            alert('Username already exists!');
+          } else {
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registration successful! Please log in.');
+          }
+        } else {
+          alert('Please fill in both fields.');
+        }
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('currentUser');
+        showLoginForm();
+      });
+
+      todoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const task = todoInput.value.trim();
+        if (task) {
+          const currentUser = localStorage.getItem('currentUser');
+          let todos = JSON.parse(localStorage.getItem(`todos_${currentUser}`)) || [];
+          todos.push({ task, completed: false });
+          localStorage.setItem(`todos_${currentUser}`, JSON.stringify(todos));
+          todoInput.value = '';
+          displayTodos();
+        }
+      });
+
+      todoList.addEventListener('click', (event) => {
+        if (event.target.tagName === 'BUTTON') {
+          const li = event.target.parentElement;
+          const task = li.querySelector('span').textContent;
+          const currentUser = localStorage.getItem('currentUser');
+          let todos = JSON.parse(localStorage.getItem(`todos_${currentUser}`)) || [];
+          todos = todos.filter(todo => todo.task !== task);
+          localStorage.setItem(`todos_${currentUser}`, JSON.stringify(todos));
+          todoList.removeChild(li);
+        } else if (event.target.tagName === 'SPAN') {
+          const currentUser = localStorage.getItem('currentUser');
+          let todos = JSON.parse(localStorage.getItem(`todos_${currentUser}`)) || [];
+          todos = todos.map(todo => {
+            if (todo.task === event.target.textContent) {
+              todo.completed = !todo.completed;
+            }
+            return todo;
+          });
+          localStorage.setItem(`todos_${currentUser}`, JSON.stringify(todos));
+          displayTodos();
+        }
+      });
+
+      clearAllButton.addEventListener('click', () => {
+        const currentUser = localStorage.getItem('currentUser');
+        localStorage.removeItem(`todos_${currentUser}`);
+        displayTodos();
+      });
+
+      if (localStorage.getItem('currentUser')) {
+        showTodoApp();
+      } else {
+        showLoginForm();
+      }
+    });
+
+  </script>
 </body>
 
 </html>
